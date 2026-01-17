@@ -200,24 +200,51 @@ function initSettings(panel) {
   section.appendChild(save)
   section.appendChild(reset)
 
+  const creditsList = $('<ul class="list-unstyled">')
+
+  CONTRIBUTORS.forEach((c) => {
+    const line = $('<li>')
+
+    if (c.page) {
+      line.append(
+        $('<a>')
+          .attr('href', c.page)
+          .attr('target', '_blank')
+          .text(c.name),
+      )
+    } else {
+      line.text(c.name)
+    }
+
+    if (c.role) {
+      line.append(` — ${c.role}`)
+    }
+
+    if (c.github) {
+      line.append(
+        ' (',
+        $('<a>')
+          .attr('href', c.github)
+          .attr('target', '_blank')
+          .text('GitHub'),
+        ')',
+      )
+    }
+
+    creditsList.append(line)
+  })
+
   $('<div>')
     .addClass('section-3')
     .append($('<h3>Credits</h3>').addClass('mb-4'))
     .append(
       $('<div class="font-normal">')
+        .append($('<div class="font-normal">').append(creditsList))
+        .append($('<p>Status: maintained</p>'))
         .append(
           $(
-            '<p>' +
-              '<a href="https://sirrebrl.github.io/CIFIsuper/" target="_blank">Created</a> by @sirrebrl. ' +
-              '<a href="https://github.com/1pete/cifi-proj" target="_blank">Modified</a> by @1pete.' +
-              '</p>',
-          ),
-        )
-        .append($('<p>Status: discontinued</p>'))
-        .append(
-          $(
-            '<p><a href="https://github.com/1pete/cifi-proj/pulls" target="_blank">Pull requests</a>' +
-              ' are welcome. You can also fork for your own version. :)</p>',
+            '<p><a href="https://github.com/Zyrotot/cifi-proj/pulls" target="_blank">Pull requests</a>' +
+            ' are welcome. You can also fork for your own version. :)</p>',
           ),
         ),
     )
