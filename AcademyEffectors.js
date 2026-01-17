@@ -248,43 +248,11 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'mission4',
-        type: 'select',
-        label: 'Research 67',
-        maxLevel: 6,
-        text: 'Material:  Lv2 x2, Lv4 x3, Lv6 x4',
-        textClassName: 'font-normal',
-      },
-      {
-        id: 'mission5',
-        type: 'select',
-        label: 'Research 77',
-        maxLevel: 6,
-        text: 'Material:  Lv2 x3, Lv4 x4, Lv6 x5',
-        textClassName: 'font-normal',
-      },
-      {
         id: 'perfection2',
         type: 'select',
         label: 'Research 60',
         maxLevel: 6,
         text: 'Material:  Lv2 x5',
-        textClassName: 'font-normal',
-      },
-      {
-        id: 'perfection3',
-        type: 'select',
-        label: 'Research 70',
-        maxLevel: 6,
-        text: 'Lv2: Material x5; Lv5: Speed *2',
-        textClassName: 'font-normal',
-      },
-      {
-        id: 'perfection4',
-        type: 'select',
-        label: 'Research 80',
-        maxLevel: 6,
-        text: 'Lv2: Material x9; Lv5: Speed *1.5',
         textClassName: 'font-normal',
       },
       {
@@ -296,11 +264,43 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
+        id: 'mission4',
+        type: 'select',
+        label: 'Research 67',
+        maxLevel: 6,
+        text: 'Material:  Lv2 x2, Lv4 x3, Lv6 x4',
+        textClassName: 'font-normal',
+      },
+      {
+        id: 'perfection3',
+        type: 'select',
+        label: 'Research 70',
+        maxLevel: 6,
+        text: 'Lv2: Material x5; Lv5: Speed *2',
+        textClassName: 'font-normal',
+      },
+      {
         id: 'construction2',
         type: 'select',
         label: 'Research 72',
         maxLevel: 6,
         text: 'Proj Cost: - , /2 , /3 , /3 , /4 , /4',
+        textClassName: 'font-normal',
+      },
+      {
+        id: 'mission5',
+        type: 'select',
+        label: 'Research 77',
+        maxLevel: 6,
+        text: 'Material:  Lv2 x3, Lv4 x4, Lv6 x5',
+        textClassName: 'font-normal',
+      },
+      {
+        id: 'perfection4',
+        type: 'select',
+        label: 'Research 80',
+        maxLevel: 6,
+        text: 'Lv2: Material x9; Lv5: Speed *1.5',
         textClassName: 'font-normal',
       },
     ].map((i) => {
@@ -341,6 +341,12 @@ const sections = [
           '<label class="has-tip" data-bs-toggle="tooltip" data-bs-title="The Chrystonian Prism">Relic 20</label>',
         max: 100,
         text: '/ 100',
+      },
+      {
+        id: 'gadget12',
+        type: 'number',
+        label:
+          '<label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Local Fragment Magnet">Gadget 12</label>',
       },
       { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation Badge' },
       {
@@ -601,6 +607,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set relic20(value) {
     playerData.relics.relic20 = value
   },
+  set gadget12(value) {
+    playerData.gadgets.gadget12 = value
+  },
   set darkinno(value) {
     playerData.academy.badges.darkInnovation = value
   },
@@ -631,6 +640,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get relic20() {
     return playerData.relics.relic20
+  },
+  get gadget12() {
+    return playerData.gadgets.gadget12
   },
   get darkinno() {
     return playerData.academy.badges.darkInnovation

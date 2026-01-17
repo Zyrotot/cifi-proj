@@ -5,7 +5,7 @@ PLAYER DATA CHANGE LOG
 */
 
 const blankPlayer = {
-  version: 14,
+  version: 15,
   activePortal: 'academyEffector',
   colorProfile: {
     academyProjects: ['#444444', '#CCCC44', '#44CC44', '#4444CC'],
@@ -147,6 +147,14 @@ const blankPlayer = {
           corvettes: 0,
           locked: false,
         },
+        {
+          // Farm 1-4
+          pods: 0,
+          fireteams: 0,
+          titans: 0,
+          corvettes: 0,
+          locked: false,
+        },
       ],
       [
         // Planet 2
@@ -168,6 +176,14 @@ const blankPlayer = {
         },
         {
           // Farm 2-3
+          pods: 0,
+          fireteams: 0,
+          titans: 0,
+          corvettes: 0,
+          locked: false,
+        },
+        {
+          // Farm 2-4
           pods: 0,
           fireteams: 0,
           titans: 0,
@@ -201,6 +217,14 @@ const blankPlayer = {
           corvettes: 0,
           locked: false,
         },
+        {
+          // Farm 3-4
+          pods: 0,
+          fireteams: 0,
+          titans: 0,
+          corvettes: 0,
+          locked: false,
+        },
       ],
       [
         // Planet 4
@@ -222,6 +246,14 @@ const blankPlayer = {
         },
         {
           // Farm 4-3
+          pods: 0,
+          fireteams: 0,
+          titans: 0,
+          corvettes: 0,
+          locked: false,
+        },
+        {
+          // Farm 4-4
           pods: 0,
           fireteams: 0,
           titans: 0,
@@ -274,6 +306,9 @@ const blankPlayer = {
     relic3: 0,
     relic5: 0,
     relic20: 0,
+  },
+  gadgets: {
+    gadget12: 0,
   },
   ouro: {
     enabled: false,
@@ -330,12 +365,28 @@ function fixPlayerData() {
     delete playerData.relics.glider
   }
 
+  if (!playerData.gadgets) {
+    playerData.gadgets = blankPlayer.gadgets
+  }
+
   if (!playerData.fleet.ouro) {
     playerData.fleet.ouro = blankPlayer.fleet.ouro
   }
 
   if (playerData.academy.farms.length < 4) {
-    playerData.academy.farms.push(blankPlayer.academy.farms[3])
+    playerData.academy.farms.push(
+      JSON.parse(JSON.stringify(blankPlayer.academy.farms[3]))
+    )
+  }
+
+  for (let p = 0; p < blankPlayer.academy.farms.length; p++) {
+    for (let f = 0; f < blankPlayer.academy.farms[p].length; f++) {
+      if (!playerData.academy.farms[p][f]) {
+        playerData.academy.farms[p][f] = JSON.parse(
+          JSON.stringify(blankPlayer.academy.farms[p][f])
+        )
+      }
+    }
   }
 
   if (playerData.version < blankPlayer.version) {

@@ -18,8 +18,8 @@ function CalculateFarmTimes(getRawTime = false) {
 
   let farmData = []
   for (let planet = 0; planet < GameDB.academy.planets; planet++) {
-    for (let farm = 0; farm < 3; farm++) {
-      const farmInfo = GameDB.academy.farms[planet * 3 + farm]
+    for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
+      const farmInfo = GameDB.academy.farms[planet * GameDB.academy.farms_number + farm]
       const farmSetting = playerData.academy.farms[planet][farm]
       const personnelSetting = playerData.academy.personnel
 
@@ -113,15 +113,15 @@ function GetMaxMissionRate() {
   let farmDetails = []
 
   for (let planet = 0; planet < GameDB.academy.planets; planet++) {
-    for (let farm = 0; farm < 3; farm++) {
+    for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
       let farmSpecs = {
-        id: farms[planet * 3 + farm].id,
+        id: farms[planet * GameDB.academy.farms_number + farm].id,
         locked: false,
-        maxPop: farms[planet * 3 + farm].maxPop,
+        maxPop: farms[planet * GameDB.academy.farms_number + farm].maxPop,
         currentPop: 0,
         popDistro: [0, 0, 0, 0],
         power: 0,
-        baseTime: farms[planet * 3 + farm].baseTime / missionSpeedBonus,
+        baseTime: farms[planet * GameDB.academy.farms_number + farm].baseTime / missionSpeedBonus,
         get availSpace() {
           return this.maxPop - this.currentPop
         },
@@ -384,9 +384,7 @@ function CalculateFarmYields(giveTotal = false) {
     if (farmDuration <= duration) {
       let newFarm = {
         id: GameDB.academy.farms[i].id,
-        staticMats: GameDB.academy.farms[i].baseMats.map(
-          (mat) => mat * staticMatBonus,
-        ),
+        staticMats: [...GameDB.academy.farms[i].baseMats],
         runTime: farmDuration,
         activeTime: farmDuration,
         farmCount: Math.floor(duration / farmDuration),
@@ -400,8 +398,8 @@ function CalculateFarmYields(giveTotal = false) {
     acc[farm.id] = farm.farmCount
     return acc
   }, {})
-  let matYield = [0, 0, 0, 0, 0, 0, 0, 0]
-  let matContrib = [{}, {}, {}, {}, {}, {}, {}, {}]
+  let matYield = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  let matContrib = [{}, {}, {}, {}, {}, {}, {}, {}, {}]
   if (giveTotal) {
     matYield = [...playerData.academy.stock]
   }
@@ -428,7 +426,13 @@ function CalculateFarmYields(giveTotal = false) {
         if (farms[i].activeTime <= 0) {
           farms[i].activeTime = farms[i].runTime
           for (let mat = 0; mat < farms[i].staticMats.length; mat++) {
-            const product = farms[i].staticMats[mat] * dynamicMatBonus
+            const isLastMat = mat === farms[i].staticMats.length - 1
+
+            console.log("Is last mat? " + isLastMat)
+
+            const product = isLastMat
+              ? farms[i].staticMats[mat]          // no bonus
+              : farms[i].staticMats[mat] * staticMatBonus * dynamicMatBonus
             matYield[mat] += product
             if (matContrib[mat][farms[i].id]) {
               matContrib[mat][farms[i].id] += product
@@ -477,8 +481,12 @@ function CalculateFarmYields(giveTotal = false) {
 
     farms.forEach((farm) => {
       farm.staticMats.forEach((staticMat, mat) => {
-        const totalMat =
-          staticMat *
+        const isLastMat = mat === farm.staticMats.length - 1
+
+        const totalMat = isLastMat
+          ? staticMat * farm.farmCount
+          : staticMat *
+          staticMatBonus *
           currentZeusRankBonus *
           zeusRankBonusOverTime *
           farm.farmCount

@@ -140,7 +140,7 @@ academyFarmPortal.pages.default.dataLinkage = {
 
 // Adding farm personnel linkages
 for (let planet = 0; planet < GameDB.academy.planets; planet++) {
-  for (let farm = 0; farm < 3; farm++) {
+  for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
     let propertyName = `farm${planet}${farm}pods`
     Object.defineProperty(
       academyFarmPortal.pages.default.dataLinkage,
@@ -308,7 +308,7 @@ academyFarmPortal.pages.default.initFunction = function (panel) {
     table.appendChild(tbody)
 
     for (let plannet = 0; plannet < GameDB.academy.planets; plannet++) {
-      for (let farm = 0; farm < 3; farm++) {
+      for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
         const row = createElement('tr')
         row.appendChild(
           createElement('td', 'text-end', null, `${plannet + 1}-${farm + 1}`),
@@ -535,12 +535,15 @@ academyFarmPortal.pages.default.initFunction = function (panel) {
         { value: '11', label: '1-1' },
         { value: '12', label: '1-2' },
         { value: '13', label: '1-3' },
+        { value: '14', label: '1-4' },
         { value: '21', label: '2-1' },
         { value: '22', label: '2-2' },
         { value: '23', label: '2-3' },
+        { value: '24', label: '2-4' },
         { value: '31', label: '3-1' },
         { value: '32', label: '3-2' },
         { value: '33', label: '3-3' },
+        { value: '34', label: '3-4' },
       ]
 
       const filter = $(
@@ -684,10 +687,10 @@ function PopulateTiming() {
   const matBonus = GetCurrentMatBonus()
 
   for (let planet = 0; planet < GameDB.academy.planets; planet++) {
-    for (let farm = 0; farm < 3; farm++) {
-      const farmInfo = GameDB.academy.farms[planet * 3 + farm]
+    for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
+      const farmInfo = GameDB.academy.farms[planet * GameDB.academy.farms_number + farm]
       const maxPersonnel = farmInfo.maxPop
-      let datum = farmData[planet * 3 + farm]
+      let datum = farmData[planet * GameDB.academy.farms_number + farm]
 
       const totalEl = portalPanel[`farm${planet}${farm}total`]
       totalEl.innerText = datum.personnel
@@ -700,13 +703,21 @@ function PopulateTiming() {
       timeEl.classList.toggle('is-capped', datum.isCapped)
       timeEl.setAttribute('data-bs-title', datum.rawTime || '-')
       portalPanel[`farm${planet}${farm}mat`].innerText = farmInfo.baseMats
-        .map((a, i) => {
+        .map((a, i, arr) => {
           if (a === 0) return null
-          const mat = matBonus * a
-          return GameDB.academy.materials[i] + ': ' + formatLargeInteger(mat)
+
+          const isLast = i === arr.length - 1
+          const mat = isLast ? a : matBonus * a
+
+          return (
+            GameDB.academy.materials[i] +
+            ': ' +
+            formatLargeInteger(mat)
+          )
         })
         .filter(Boolean)
         .join(', ')
+
     }
   }
 }
@@ -715,7 +726,7 @@ function maximizeMissionRate() {
   GetMaxMissionRate()
 
   for (let planet = 0; planet < GameDB.academy.planets; planet++) {
-    for (let farm = 0; farm < 3; farm++) {
+    for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
       for (let personnel = 0; personnel < 4; personnel++) {
         let type = GameDB.academy.personnel[personnel]
         portalPanel[`farm${planet}${farm}${type}`].value =
@@ -730,7 +741,7 @@ function maximizeMissionRate() {
 
 function clearMissions() {
   for (let planet = 0; planet < GameDB.academy.planets; planet++) {
-    for (let farm = 0; farm < 3; farm++) {
+    for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
       if (playerData.academy.farms[planet][farm].locked) continue
 
       for (let personnel = 0; personnel < 4; personnel++) {
@@ -777,7 +788,7 @@ function populateYield() {
       {},
     )
 
-    genZeusRank(yieldData.missionYield, duration)
+    genZeusRank(yieldData.missionYield, duration, yieldData.matYield[8])
     genProduction(portalPanel.missionProd, yieldData.missionContrib)
     genProduction(portalPanel.apProd, apContrib)
     genProduction(portalPanel.difarProd, yieldData.matContrib[0])
@@ -793,7 +804,7 @@ function populateYield() {
   }
 }
 
-function genZeusRank(missionCount, duration) {
+function genZeusRank(missionCount, duration, yeld_hour) {
   const zeusReqs = GameDB.fleet.zeus.rankRequirements
   const zeusTable = $(portalPanel.zeusTable)
   const container = $(portalPanel.rankTable)
@@ -811,8 +822,8 @@ function genZeusRank(missionCount, duration) {
   zeusTable.append(missionRate)
   if (playerData.ouro.enabled) {
     const relicFragPerHr =
-      numMissionPerHr * (0.001 + 0.001 * (playerData.relics.relic5 || 0))
-    zeusTable.append(
+      numMissionPerHr * (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12  / 10) || 0)) + yeld_hour
+      zeusTable.append(
       $('<tr>')
         .append($('<td>').text('Relic Fragment'))
         .append(

@@ -3,6 +3,7 @@ let GameDB = {
   academy: {
     personnel: ['pods', 'fireteams', 'titans', 'corvettes'],
     planets: 4,
+    farms_number: 4,
     materials: [
       'Difar',
       'Kento',
@@ -12,6 +13,7 @@ let GameDB = {
       'Adamorphium',
       'Moskom',
       'Darkseid',
+      'Fragments'
     ],
     // baseTimes are in minutes
     farms: [
@@ -21,7 +23,7 @@ let GameDB = {
         maxPop: 20,
         baseAP: 5,
         // Difar
-        baseMats: [38, 0, 0, 0, 0, 0, 0, 0],
+        baseMats: [38, 0, 0, 0, 0, 0, 0, 0, 0],
         isTimeRounded: false,
       },
       {
@@ -30,7 +32,7 @@ let GameDB = {
         maxPop: 60,
         baseAP: 150,
         // Kento
-        baseMats: [0, 320, 0, 0, 0, 0, 0, 0],
+        baseMats: [0, 320, 0, 0, 0, 0, 0, 0, 0],
         isTimeRounded: false,
       },
       {
@@ -39,7 +41,16 @@ let GameDB = {
         maxPop: 100,
         baseAP: 1200,
         // Difar, Kento, Chromium
-        baseMats: [1350, 280, 760, 0, 0, 0, 0, 0],
+        baseMats: [1350, 280, 760, 0, 0, 0, 0, 0, 0],
+        isTimeRounded: false,
+      },
+      {
+        id: 14,
+        baseTime: 6000,
+        maxPop: 120,
+        baseAP: 1200,
+        // Fragments
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0.006],
         isTimeRounded: false,
       },
       {
@@ -48,7 +59,7 @@ let GameDB = {
         maxPop: 80,
         baseAP: 35,
         // Exon
-        baseMats: [0, 0, 0, 35, 0, 0, 0, 0],
+        baseMats: [0, 0, 0, 35, 0, 0, 0, 0, 0],
         isTimeRounded: true,
       },
       {
@@ -57,7 +68,7 @@ let GameDB = {
         maxPop: 160,
         baseAP: 170,
         // Chromium, Organium
-        baseMats: [0, 0, 560, 0, 80, 0, 0, 0],
+        baseMats: [0, 0, 560, 0, 80, 0, 0, 0, 0],
         isTimeRounded: true,
       },
       {
@@ -66,7 +77,15 @@ let GameDB = {
         maxPop: 500,
         baseAP: 11500,
         // Exon, Organium, Adamorphium
-        baseMats: [0, 0, 0, 2200, 320, 260, 0, 0],
+        baseMats: [0, 0, 0, 2200, 320, 260, 0, 0, 0],
+        isTimeRounded: true,
+      },
+      {
+        id: 24,
+        baseTime: 72000,
+        maxPop: 500,
+        baseAP: 11500,
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
         isTimeRounded: true,
       },
       {
@@ -75,7 +94,7 @@ let GameDB = {
         maxPop: 150,
         baseAP: 2000,
         // Moskom
-        baseMats: [0, 0, 0, 0, 0, 0, 19, 0],
+        baseMats: [0, 0, 0, 0, 0, 0, 19, 0, 0],
         isTimeRounded: true,
       },
       {
@@ -84,7 +103,7 @@ let GameDB = {
         maxPop: 2000,
         baseAP: 1000000,
         // Darkseid
-        baseMats: [0, 0, 0, 0, 0, 0, 0, 80],
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 80, 0],
         isTimeRounded: true,
       },
       {
@@ -93,7 +112,15 @@ let GameDB = {
         maxPop: 4000,
         baseAP: 2000000,
         // Organium, Adamorphium, Moskom, Darkseid
-        baseMats: [0, 0, 0, 0, 5200, 2440, 3980, 160],
+        baseMats: [0, 0, 0, 0, 5200, 2440, 3980, 160, 0],
+        isTimeRounded: true,
+      },
+      {
+        id: 34,
+        baseTime: 1875000,
+        maxPop: 4000,
+        baseAP: 2000000,
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
         isTimeRounded: true,
       },
       {
@@ -102,7 +129,7 @@ let GameDB = {
         maxPop: 1000,
         baseAP: 17000,
         // Difar, Kento, Organium
-        baseMats: [40, 60, 0, 0, 50, 0, 0, 0],
+        baseMats: [40, 60, 0, 0, 50, 0, 0, 0, 0],
         isTimeRounded: true,
       },
       {
@@ -111,7 +138,7 @@ let GameDB = {
         maxPop: 10000,
         baseAP: 3300000,
         // Chromium, Adamorphium, Darkseid
-        baseMats: [0, 0, 8000, 0, 0, 7000, 0, 2000],
+        baseMats: [0, 0, 8000, 0, 0, 7000, 0, 2000, 0],
         isTimeRounded: true,
       },
       {
@@ -120,14 +147,22 @@ let GameDB = {
         maxPop: 20000,
         baseAP: 6700000,
         // Exon, Moskom, Darkseid
-        baseMats: [0, 0, 0, 30000, 0, 0, 20000, 5000],
+        baseMats: [0, 0, 0, 30000, 0, 0, 20000, 5000, 0],
+        isTimeRounded: true,
+      },
+      {
+        id: 44,
+        baseTime: 9750000,
+        maxPop: 20000,
+        baseAP: 6700000,
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
         isTimeRounded: true,
       },
     ], // END .farms
     projects: [
       {
         name: 'Storage Facility',
-        baseCosts: [600, 200, 0, 0, 0, 0, 0, 0],
+        baseCosts: [600, 200, 0, 0, 0, 0, 0, 0, 0],
         costScalar: 1.25,
         costBump: 0.016,
         costBumpOuro: 0.136,
@@ -135,7 +170,7 @@ let GameDB = {
       },
       {
         name: 'Transfer Wires',
-        baseCosts: [2750, 1500, 500, 0, 0, 0, 0, 0],
+        baseCosts: [2750, 1500, 500, 0, 0, 0, 0, 0, 0],
         costScalar: 1.4,
         costBump: 0.05,
         costBumpOuro: 0.1873,
@@ -144,7 +179,7 @@ let GameDB = {
       },
       {
         name: 'Bio-Mechanics Lab',
-        baseCosts: [0, 0, 2400, 1000, 500, 0, 0, 0],
+        baseCosts: [0, 0, 2400, 1000, 500, 0, 0, 0, 0],
         costScalar: 1.7,
         costBump: 0.09,
         costBumpOuro: 0.2712,
@@ -153,7 +188,7 @@ let GameDB = {
       },
       {
         name: 'Exo-Energy',
-        baseCosts: [0, 7000, 5000, 1500, 1500, 0, 0, 0],
+        baseCosts: [0, 7000, 5000, 1500, 1500, 0, 0, 0, 0],
         costScalar: 1.4,
         costBump: 0.07,
         costBumpOuro: 0.2675, // TODO: to confirm
@@ -161,7 +196,7 @@ let GameDB = {
       },
       {
         name: 'Defensive Research',
-        baseCosts: [0, 0, 0, 0, 0, 1000, 200, 0],
+        baseCosts: [0, 0, 0, 0, 0, 1000, 200, 0, 0],
         costScalar: 1.6,
         costBump: 0.08,
         costBumpOuro: 0.309, // TODO: to confirm
@@ -176,14 +211,14 @@ let GameDB = {
       },
       {
         name: 'Fuel Compression',
-        baseCosts: [1e38, 0, 0, 4e37, 0, 0, 7e36, 0],
+        baseCosts: [1e38, 0, 0, 4e37, 0, 0, 7e36, 0, 0],
         costScalar: 3,
         costBump: 0.2,
         bpCount: 2,
       },
       {
         name: 'Quantum Weaponry',
-        baseCosts: [0, 2e45, 0, 0, 5e44, 0, 0, 0],
+        baseCosts: [0, 2e45, 0, 0, 5e44, 0, 0, 0, 0],
         costScalar: 3.2,
         costBump: 0.25,
         bpCount: 2,
