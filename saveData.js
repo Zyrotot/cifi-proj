@@ -279,6 +279,9 @@ const blankPlayer = {
     enabled: false,
     meltdown: 0.0001,
     gemCreationNode3Bonus: 1,
+    knoxSowBonus: 1,
+    extractorDrillBonus: 1,
+    necrumBonus: 1,
   },
 }
 
@@ -331,8 +334,7 @@ function fixPlayerData() {
     playerData.fleet.ouro = blankPlayer.fleet.ouro
   }
 
-  if (playerData.academy.farms.length < 4)
-  {
+  if (playerData.academy.farms.length < 4) {
     playerData.academy.farms.push(blankPlayer.academy.farms[3])
   }
 

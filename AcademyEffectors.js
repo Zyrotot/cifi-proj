@@ -284,7 +284,7 @@ const sections = [
         type: 'select',
         label: 'Research 80',
         maxLevel: 6,
-        text: 'Lv2: Material x9; Lv5: Speed *2',
+        text: 'Lv2: Material x9; Lv5: Speed *1.5',
         textClassName: 'font-normal',
       },
       {
@@ -347,6 +347,23 @@ const sections = [
         id: 'creationgemnode3bonus',
         type: 'number',
         label: 'Creation Gem Node #3 Bonus',
+      },
+      {
+        id: 'knoxSowBonus',
+        type: 'number',
+        label: 'Knox SoW Materials Bonus',
+        style: { width: 80 },
+      },
+      {
+        id: 'extractorDrillBonus',
+        type: 'number',
+        label: 'Heavy-Duty Auto Extractor-Drill',
+      },
+      {
+        id: 'necrumBonus',
+        type: 'number',
+        label: 'Necrum Exchange Bonus',
+        style: { width: 80 },
       },
     ],
   },
@@ -590,6 +607,15 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set creationgemnode3bonus(value) {
     playerData.ouro.gemCreationNode3Bonus = value
   },
+  set knoxSowBonus(value) {
+    playerData.ouro.knoxSowBonus = value
+  },
+  set extractorDrillBonus(value) {
+    playerData.ouro.extractorDrillBonus = value
+  },
+  set necrumBonus(value) {
+    playerData.ouro.necrumBonus = value
+  },
 
   get ouroboros() {
     return playerData.ouro.enabled
@@ -611,6 +637,16 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get creationgemnode3bonus() {
     return playerData.ouro.gemCreationNode3Bonus
+  },
+  get knoxSowBonus() {
+    6
+    return playerData.ouro.knoxSowBonus
+  },
+  get extractorDrillBonus() {
+    return playerData.ouro.extractorDrillBonus
+  },
+  get necrumBonus() {
+    return playerData.ouro.necrumBonus
   },
 }
 
@@ -804,9 +840,14 @@ academyEffectorPortal.pages.default.updateFunction = function (e) {
 
   if (e.target.type === 'number') {
     if (
-      ['meltdown', 'ultimamatbonus', 'creationgemnode3bonus'].indexOf(
-        e.target.id,
-      ) > -1
+      [
+        'meltdown',
+        'ultimamatbonus',
+        'creationgemnode3bonus',
+        'knoxSowBonus',
+        'extractorDrillBonus',
+        'necrumBonus',
+      ].indexOf(e.target.id) > -1
     ) {
       portalPanel.dataLinkage[e.target.id] = parseFloat(e.target.value)
     } else {
