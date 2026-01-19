@@ -6,16 +6,16 @@ const CONTRIBUTORS = [
     role: 'Creator',
   },
   {
-    name: '1pete',
-    github: 'https://github.com/1pete',
-    page: 'https://1pete.github.io/cifi-proj/',
-    role: 'Maintaner',
-  },
-  {
     name: 'zyrotot',
     github: 'https://github.com/Zyrotot',
     page: 'https://zyrotot.github.io/cifi-proj/',
     role: 'Maintaner',
+  },
+  {
+    name: '1pete',
+    github: 'https://github.com/1pete',
+    page: 'https://1pete.github.io/cifi-proj/',
+    role: 'Contributor',
   },
   {
     name: 'MichaelZCert',
