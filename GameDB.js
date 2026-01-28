@@ -82,10 +82,10 @@ let GameDB = {
       },
       {
         id: 24,
-        baseTime: 72000,
-        maxPop: 500,
-        baseAP: 11500,
-        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        baseTime: 132000,
+        maxPop: 1000,
+        baseAP: 23000,
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0.028],
         isTimeRounded: true,
       },
       {
