@@ -544,6 +544,10 @@ academyFarmPortal.pages.default.initFunction = function (panel) {
         { value: '32', label: '3-2' },
         { value: '33', label: '3-3' },
         { value: '34', label: '3-4' },
+        { value: '41', label: '4-1' },
+        { value: '42', label: '4-2' },
+        { value: '43', label: '4-3' },
+        { value: '44', label: '4-4' },
       ]
 
       const filter = $(
