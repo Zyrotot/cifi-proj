@@ -358,6 +358,7 @@ const sections = [
         id: 'creationgemnode3bonus',
         type: 'number',
         label: 'Creation Gem Node #3 Bonus',
+        style: { width: 80 },
       },
       {
         id: 'knoxSowLevel',
