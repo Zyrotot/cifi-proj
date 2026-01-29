@@ -393,7 +393,6 @@ const getMatBonusFromOuro = () => {
   BonusDebugger.log('Knox Bonus (1.1^sowLevel)^maxStage', knoxBonusMultiplier, 'KNOX');
 
   const knoxBonus = ouroNerf * knoxBonusMultiplier;
-  BonusDebugger.log('Final Knox Bonus', knoxBonus, 'KNOX');
 
   const extractorDrillBonus = Math.pow(1.005, playerData.gadgets.gadget8) * 
     Math.pow(1.35, Math.floor(playerData.gadgets.gadget8 / 10));
@@ -403,7 +402,7 @@ const getMatBonusFromOuro = () => {
   const drillBonus = knoxBonus * (extractorDrillBonus || 1);
   BonusDebugger.log('Combined Knox x Drill', drillBonus, 'DRILL');
 
-  const necrumBonusMultiplier = 1.002 ** playerData.ouro.necrumBonus || 1;
+  const necrumBonusMultiplier = 1.002 ** playerData.ouro.necrumStacks || 1;
   BonusDebugger.log('Necrum Bonus Multiplier (1.002^necrumBonus)', necrumBonusMultiplier, 'NECRUM');
   
   const necrumBonus = drillBonus * necrumBonusMultiplier;
@@ -435,7 +434,7 @@ function GetStaticMatBonus() {
   // Zeus installs
   BonusDebugger.group('Zeus Ship Installs');
   const shipBonus = isOuroEnabled && playerData.academy.badges.darkInnovation ? 3 : 1;
-  BonusDebugger.log('Ship Bonus Multiplier (Ouro + Badge)', shipBonus, 'ZEUS_SHIP');
+  BonusDebugger.log('Ship Bonus Multiplier (Dark Badge)', shipBonus, 'ZEUS_SHIP');
   
   const zeus3Bonus = 1 + 0.25 * zeus.installs[2] * (zeus.crew || 0) * shipBonus
   staticMatBonus *= zeus3Bonus
