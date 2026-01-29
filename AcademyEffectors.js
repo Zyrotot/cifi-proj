@@ -72,7 +72,6 @@ const sections = [
         id: 'swarm',
         type: 'number',
         label: 'Rule of the Swarm',
-        max: 30,
         text: '/ 30',
         info: {
           type: 'mod',
@@ -99,7 +98,6 @@ const sections = [
         id: 'productivity',
         type: 'number',
         label: 'Rule of Productivity',
-        max: 10,
         text: '/ 10',
         info: {
           type: 'mod',
@@ -113,7 +111,6 @@ const sections = [
         id: 'looping',
         type: 'number',
         label: 'Rule of Looping',
-        max: 10,
         text: '/ 10',
         info: {
           type: 'mod',
@@ -127,7 +124,6 @@ const sections = [
         id: 'sekhur5',
         type: 'number',
         label: 'Planet Sekhur-5',
-        max: 1,
         text: '/ 1',
         isOuro: true,
       },
