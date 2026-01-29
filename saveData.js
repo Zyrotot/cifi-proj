@@ -308,15 +308,16 @@ const blankPlayer = {
     relic20: 0,
   },
   gadgets: {
+    gadget8: 0,
     gadget12: 0,
   },
   ouro: {
     enabled: false,
     meltdown: 0.0001,
     gemCreationNode3Bonus: 1,
-    knoxSowBonus: 1,
-    extractorDrillBonus: 1,
-    necrumBonus: 1,
+    knoxSowLevel: 0,
+    knoxMaxStage: 0,
+    necrumStacks: 0,
   },
 }
 

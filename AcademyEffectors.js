@@ -343,6 +343,11 @@ const sections = [
         text: '/ 100',
       },
       {
+        id: 'gadget8',
+        type: 'number',
+        label: '<label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Heavy-Duty Auto Extractor-Drill">Gadget 8</label>',
+      },
+      {
         id: 'gadget12',
         type: 'number',
         label:
@@ -355,20 +360,21 @@ const sections = [
         label: 'Creation Gem Node #3 Bonus',
       },
       {
-        id: 'knoxSowBonus',
+        id: 'knoxSowLevel',
         type: 'number',
-        label: 'Knox SoW Materials Bonus',
+        label: 'Knox SoW Modifier Level,',
         style: { width: 80 },
       },
       {
-        id: 'extractorDrillBonus',
+        id: 'knoxMaxStage',
         type: 'number',
-        label: 'Heavy-Duty Auto Extractor-Drill',
+        label: 'Knox Max Stage Reached',
+        style: { width: 80 },
       },
       {
-        id: 'necrumBonus',
+        id: 'necrumStacks',
         type: 'number',
-        label: 'Necrum Exchange Bonus',
+        label: 'Necrum Exchange Stacks',
         style: { width: 80 },
       },
     ],
@@ -607,6 +613,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set relic20(value) {
     playerData.relics.relic20 = value
   },
+  set gadget8(value) {
+    playerData.gadgets.gadget8 = value
+  },
   set gadget12(value) {
     playerData.gadgets.gadget12 = value
   },
@@ -616,16 +625,15 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set creationgemnode3bonus(value) {
     playerData.ouro.gemCreationNode3Bonus = value
   },
-  set knoxSowBonus(value) {
-    playerData.ouro.knoxSowBonus = value
+  set knoxSowLevel(value) {
+    playerData.ouro.knoxSowLevel = value
   },
-  set extractorDrillBonus(value) {
-    playerData.ouro.extractorDrillBonus = value
+  set knoxMaxStage(value) {
+    playerData.ouro.knoxMaxStage = value
   },
-  set necrumBonus(value) {
-    playerData.ouro.necrumBonus = value
+  set necrumStacks(value) {
+    playerData.ouro.necrumStacks = value
   },
-
   get ouroboros() {
     return playerData.ouro.enabled
   },
@@ -641,6 +649,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   get relic20() {
     return playerData.relics.relic20
   },
+  get gadget8() {
+    return playerData.gadgets.gadget8
+  },
   get gadget12() {
     return playerData.gadgets.gadget12
   },
@@ -650,15 +661,14 @@ academyEffectorPortal.pages.default.dataLinkage = {
   get creationgemnode3bonus() {
     return playerData.ouro.gemCreationNode3Bonus
   },
-  get knoxSowBonus() {
-    6
-    return playerData.ouro.knoxSowBonus
+  get knoxSowLevel() {
+    return playerData.ouro.knoxSowLevel
   },
-  get extractorDrillBonus() {
-    return playerData.ouro.extractorDrillBonus
+  get knoxMaxStage() {
+    return playerData.ouro.knoxMaxStage
   },
-  get necrumBonus() {
-    return playerData.ouro.necrumBonus
+  get necrumStacks() {
+    return playerData.ouro.necrumStacks
   },
 }
 
@@ -856,9 +866,9 @@ academyEffectorPortal.pages.default.updateFunction = function (e) {
         'meltdown',
         'ultimamatbonus',
         'creationgemnode3bonus',
-        'knoxSowBonus',
-        'extractorDrillBonus',
-        'necrumBonus',
+        'knoxSowLevel',
+        'knoxMaxStage',
+        'necrumStacks',
       ].indexOf(e.target.id) > -1
     ) {
       portalPanel.dataLinkage[e.target.id] = parseFloat(e.target.value)

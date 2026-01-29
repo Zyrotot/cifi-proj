@@ -1,16 +1,59 @@
+// Bonus Calculation Debug Logger - Always logs
+const BonusDebugger = {
+  log(label, value, component = null) {
+    console.log(`[BONUS] ${component ? `[${component}] ` : ''}${label}:`, value);
+  },
+  
+  group(name) {
+    console.group(`[BONUS] ${name}`);
+  },
+  
+  groupEnd() {
+    console.groupEnd();
+  }
+};
+
 function GetMissionSpeedBonus() {
-  let missionSpeedBonus = Math.pow(1.0311, playerData.loopMods.swarm)
-  missionSpeedBonus *= Math.pow(
+  BonusDebugger.group('Mission Speed Bonus Calculation');
+  
+  let missionSpeedBonus = 1;
+  
+  const swarmBonus = Math.pow(1.0311, playerData.loopMods.swarm);
+  missionSpeedBonus *= swarmBonus;
+  BonusDebugger.log('Swarm Bonus', swarmBonus, 'SWARM');
+  
+  const missionResearchBonus = Math.pow(
     1.05,
     Math.floor((playerData.research.mission[2] + 1) / 2),
-  )
-  missionSpeedBonus *= (playerData.research.perfection[2] > 4) + 1
-  missionSpeedBonus *= (playerData.research.perfection[3] > 4) + 1
-  if (playerData.academy.badges.engineering) missionSpeedBonus *= 2
-  missionSpeedBonus *= Math.pow(1.1, playerData.loopMods.productivity)
-  missionSpeedBonus *= 1 + 0.03 * (playerData.relics.relic3 || 0)
-
-  return missionSpeedBonus || 1
+  );
+  missionSpeedBonus *= missionResearchBonus;
+  BonusDebugger.log('Mission Research Bonus', missionResearchBonus, 'RESEARCH');
+  
+  const perfection2Bonus = (playerData.research.perfection[2] > 4) + 1;
+  missionSpeedBonus *= perfection2Bonus;
+  BonusDebugger.log('Perfection [2] Bonus', perfection2Bonus, 'PERFECTION');
+  
+  const perfection3Bonus = (playerData.research.perfection[3] > 4) + 1;
+  missionSpeedBonus *= perfection3Bonus;
+  BonusDebugger.log('Perfection [3] Bonus', perfection3Bonus, 'PERFECTION');
+  
+  if (playerData.academy.badges.engineering) {
+    missionSpeedBonus *= 2;
+    BonusDebugger.log('Engineering Badge Bonus', 2, 'BADGE');
+  }
+  
+  const productivityBonus = Math.pow(1.1, playerData.loopMods.productivity);
+  missionSpeedBonus *= productivityBonus;
+  BonusDebugger.log('Productivity Bonus', productivityBonus, 'LOOPMOD');
+  
+  const relic3Bonus = 1 + 0.03 * (playerData.relics.relic3 || 0);
+  missionSpeedBonus *= relic3Bonus;
+  BonusDebugger.log('Relic 3 Bonus', relic3Bonus, 'RELIC');
+  
+  BonusDebugger.log('Final Mission Speed Bonus', missionSpeedBonus || 1, 'TOTAL');
+  BonusDebugger.groupEnd();
+  
+  return missionSpeedBonus || 1;
 }
 
 function CalculateFarmTimes(getRawTime = false) {
@@ -214,18 +257,38 @@ function GetMaxMissionRate() {
 }
 
 const getMatBonusFromLoopMod = () => {
-  return (
-    Math.pow(1.01, playerData.loopMods.beyonders) *
-    Math.pow(1.5111, playerData.loopMods.swarm) *
-    Math.pow(1.01, playerData.loopMods.expansion) *
-    Math.pow(1.05, playerData.loopMods.materialHauling) *
-    Math.pow(1 + 0.0002 * playerData.loopMods.looping, playerData.loopsFilled) *
-    Math.pow(1 + 0.002 * playerData.loopMods.productivity, playerData.level) *
-    (playerData.ouro.enabled && playerData.loopMods.sekhur5 ? 1.25 : 1)
-  )
+  console.group('[BONUS] Loop Mod Bonuses');
+  
+  const beyondersBonus = Math.pow(1.01, playerData.loopMods.beyonders);
+  console.log('[BONUS] [BEYONDERS] 1.01^beyonders:', beyondersBonus);
+  
+  const swarmBonus = Math.pow(1.5111, playerData.loopMods.swarm);
+  console.log('[BONUS] [SWARM] 1.5111^swarm:', swarmBonus);
+  
+  const expansionBonus = Math.pow(1.01, playerData.loopMods.expansion);
+  console.log('[BONUS] [EXPANSION] 1.01^expansion:', expansionBonus);
+  
+  const materialHaulingBonus = Math.pow(1.05, playerData.loopMods.materialHauling);
+  console.log('[BONUS] [MATERIAL_HAULING] 1.05^materialHauling:', materialHaulingBonus);
+  
+  const loopingBonus = Math.pow(1 + 0.0002 * playerData.loopMods.looping, playerData.loopsFilled);
+  console.log('[BONUS] [LOOPING] (1 + 0.0002*looping)^loopsFilled:', loopingBonus);
+  
+  const productivityBonus = Math.pow(1 + 0.002 * playerData.loopMods.productivity, playerData.level);
+  console.log('[BONUS] [PRODUCTIVITY] (1 + 0.002*productivity)^level:', productivityBonus);
+  
+  const sekhur5Bonus = (playerData.ouro.enabled && playerData.loopMods.sekhur5 ? 1.25 : 1);
+  console.log('[BONUS] [SEKHUR5] Ouro enabled + sekhur5:', sekhur5Bonus);
+  
+  const result = beyondersBonus * swarmBonus * expansionBonus * materialHaulingBonus * loopingBonus * productivityBonus * sekhur5Bonus;
+  console.log('[BONUS] [TOTAL] Final Loop Mod Bonus:', result);
+  console.groupEnd();
+  
+  return result;
 }
 
 const getMatBonusFromShardMilestone = () => {
+  console.group('[BONUS] Shard Milestone Bonuses');
   let bonus = 1
 
   const wonderous60 = Math.pow(
@@ -234,113 +297,223 @@ const getMatBonusFromShardMilestone = () => {
       (playerData.shardMilestones[25] > 59),
   )
   bonus *= wonderous60
+  console.log('[BONUS] [WONDROUS_60] 1.044^(max(0, milestone[25]-55)) if >59:', wonderous60);
+  
   const wonderous90 = Math.pow(
     1.068,
     Math.max(0, playerData.shardMilestones[25] - 84) *
       (playerData.shardMilestones[25] > 89),
   )
   bonus *= wonderous90
-  bonus *= Math.pow(
+  console.log('[BONUS] [WONDROUS_90] 1.068^(max(0, milestone[25]-84)) if >89:', wonderous90);
+  
+  const milestone28_20 = Math.pow(
     1.018,
     Math.max(0, playerData.shardMilestones[28] - 20) *
       (playerData.shardMilestones[28] > 24),
   )
-  bonus *= Math.pow(
+  bonus *= milestone28_20
+  console.log('[BONUS] [EARTHLY_20] 1.018^(max(0, milestone[28]-20)) if >24:', milestone28_20);
+  
+  const milestone28_45 = Math.pow(
     1.028,
     Math.max(0, playerData.shardMilestones[28] - 45) *
       (playerData.shardMilestones[28] > 49),
   )
+  bonus *= milestone28_45
+  console.log('[BONUS] [EARTHLY_45] 1.028^(max(0, milestone[28]-45)) if >49:', milestone28_45);
 
+  console.log('[BONUS] [TOTAL] Final Shard Milestone Bonus:', bonus);
+  console.groupEnd();
+  
   return bonus
 }
 
 const getMatBonusFromResearch = () => {
-  const bonus =
-    Math.pow(1.5, Math.floor(playerData.research.mission[0] / 2)) *
-    Math.pow(1.75, Math.floor(playerData.research.mission[1] / 2)) *
-    (1 + 4 * (playerData.research.perfection[1] > 1)) *
-    (playerData.research.mission[3] > 1 ? 2 : 1) *
-    (playerData.research.mission[3] > 3 ? 3 : 1) *
-    (playerData.research.mission[3] > 5 ? 4 : 1) *
-    (1 + 4 * (playerData.research.perfection[2] > 1)) *
-    (1 + 8 * (playerData.research.perfection[3] > 1)) *
-    (playerData.research.mission[4] > 1 ? 3 : 1) *
-    (playerData.research.mission[4] > 3 ? 4 : 1) *
-    (playerData.research.mission[4] > 5 ? 5 : 1)
+  console.group('[BONUS] Research Bonuses');
+  
+  const mission0Bonus = Math.pow(1.5, Math.floor(playerData.research.mission[0] / 2));
+  console.log('[BONUS] [MISSION_0] 1.5^floor(mission[0]/2):', mission0Bonus);
+  
+  const mission1Bonus = Math.pow(1.75, Math.floor(playerData.research.mission[1] / 2));
+  console.log('[BONUS] [MISSION_1] 1.75^floor(mission[1]/2):', mission1Bonus);
+  
+  const perfection1Bonus = (1 + 4 * (playerData.research.perfection[1] > 1));
+  console.log('[BONUS] [PERFECTION_1] (1 + 4 if >1):', perfection1Bonus);
+  
+  const mission3_1 = (playerData.research.mission[3] > 1 ? 2 : 1);
+  const mission3_3 = (playerData.research.mission[3] > 3 ? 3 : 1);
+  const mission3_5 = (playerData.research.mission[3] > 5 ? 4 : 1);
+  const mission3Bonus = mission3_1 * mission3_3 * mission3_5;
+  console.log('[BONUS] [MISSION_3] Tiered (>1=2, >3=3, >5=4):', mission3Bonus);
+  
+  const perfection2Bonus = (1 + 4 * (playerData.research.perfection[2] > 1));
+  console.log('[BONUS] [PERFECTION_2] (1 + 4 if >1):', perfection2Bonus);
+  
+  const perfection3Bonus = (1 + 8 * (playerData.research.perfection[3] > 1));
+  console.log('[BONUS] [PERFECTION_3] (1 + 8 if >1):', perfection3Bonus);
+  
+  const mission4_1 = (playerData.research.mission[4] > 1 ? 3 : 1);
+  const mission4_3 = (playerData.research.mission[4] > 3 ? 4 : 1);
+  const mission4_5 = (playerData.research.mission[4] > 5 ? 5 : 1);
+  const mission4Bonus = mission4_1 * mission4_3 * mission4_5;
+  console.log('[BONUS] [MISSION_4] Tiered (>1=3, >3=4, >5=5):', mission4Bonus);
+  
+  const bonus = mission0Bonus * mission1Bonus * perfection1Bonus * mission3Bonus * perfection2Bonus * perfection3Bonus * mission4Bonus;
+  console.log('[BONUS] [TOTAL] Final Research Bonus:', bonus);
+  console.groupEnd();
 
   return bonus
 }
 
 const getMatBonusFromOuro = () => {
-  const relic20Bonus = Math.pow(8, playerData.relics.relic20 || 0)
+  BonusDebugger.group('Ouro Material Bonus Calculation');
+  
+  const relic20Bonus = Math.pow(8, playerData.relics.relic20 || 0);
+  BonusDebugger.log('Relic 20 Bonus (8^count)', relic20Bonus, 'RELIC20');
 
-  const gem3Bonus = relic20Bonus * (playerData.ouro.gemCreationNode3Bonus || 1)
+  const gem3Bonus = relic20Bonus * (playerData.ouro.gemCreationNode3Bonus || 1);
+  BonusDebugger.log('Gem Creation Node 3 Bonus', playerData.ouro.gemCreationNode3Bonus || 1, 'GEM3');
+  BonusDebugger.log('Combined Relic20 x Gem3', gem3Bonus, 'GEM3');
 
-  const meltdownValue = gem3Bonus * (playerData.ouro.meltdown || 1)
+  const meltdownValue = gem3Bonus * (playerData.ouro.meltdown || 1);
+  BonusDebugger.log('Meltdown Value', playerData.ouro.meltdown || 1, 'MELTDOWN');
+  BonusDebugger.log('Combined Gem3 x Meltdown', meltdownValue, 'MELTDOWN');
 
-  const ouroNerf = meltdownValue * 0.0689
+  const ouroNerf = meltdownValue * 0.0689;
+  BonusDebugger.log('Ouro Nerf Applied (x0.0689)', ouroNerf, 'NERF');
 
-  const knoxBonus = ouroNerf * (playerData.ouro.knoxSowBonus || 1)
+  BonusDebugger.log('Knox SoW Level', playerData.ouro.knoxSowLevel, 'KNOX');
+  BonusDebugger.log('Knox Max Stage', playerData.ouro.knoxMaxStage, 'KNOX');
 
-  const drillBonus = knoxBonus * (playerData.ouro.extractorDrillBonus || 1)
+  const knoxBonusMultiplier = Math.pow(
+    1 + 0.1 * playerData.ouro.knoxSowLevel,
+    playerData.ouro.knoxMaxStage
+  ) || 1;
+  BonusDebugger.log('Knox Bonus (1.1^sowLevel)^maxStage', knoxBonusMultiplier, 'KNOX');
 
-  const necrumBonus = drillBonus * (playerData.ouro.necrumBonus || 1)
+  const knoxBonus = ouroNerf * knoxBonusMultiplier;
+  BonusDebugger.log('Final Knox Bonus', knoxBonus, 'KNOX');
 
-  return necrumBonus
+  const extractorDrillBonus = Math.pow(1.005, playerData.gadgets.gadget8) * 
+    Math.pow(1.35, Math.floor(playerData.gadgets.gadget8 / 10));
+  BonusDebugger.log('Gadget 8 Level', playerData.gadgets.gadget8, 'GADGET8');
+  BonusDebugger.log('Extractor Drill Bonus (1.005^level x 1.35^(level/10))', extractorDrillBonus, 'GADGET8');
+
+  const drillBonus = knoxBonus * (extractorDrillBonus || 1);
+  BonusDebugger.log('Combined Knox x Drill', drillBonus, 'DRILL');
+
+  const necrumBonusMultiplier = 1.002 ** playerData.ouro.necrumBonus || 1;
+  BonusDebugger.log('Necrum Bonus Multiplier (1.002^necrumBonus)', necrumBonusMultiplier, 'NECRUM');
+  
+  const necrumBonus = drillBonus * necrumBonusMultiplier;
+  BonusDebugger.log('Final Necrum Bonus', necrumBonus, 'NECRUM');
+  BonusDebugger.log('Final Ouro Material Bonus (TOTAL)', necrumBonus, 'TOTAL');
+  
+  BonusDebugger.groupEnd();
+  return necrumBonus;
 }
 
 function GetStaticMatBonus() {
+  BonusDebugger.group('Static Material Bonus Calculation');
+  
   const isOuroEnabled = playerData.ouro.enabled
   const zeus = playerData.fleet.zeus
   const ouro = playerData.fleet.ouro
 
   let staticMatBonus = 1
+  BonusDebugger.log('Starting Base', 1, 'BASE');
 
-  // loop mods
+  // Loop mods
+  BonusDebugger.group('Loop Mods Contribution');
   const matBonusFromLoopMod = getMatBonusFromLoopMod()
-  console.log(
-    'mat bonus from loop mods exclude zeus rank benefit',
-    matBonusFromLoopMod.toExponential(2),
-  )
   staticMatBonus *= matBonusFromLoopMod
+  BonusDebugger.log('Loop Mods Total Bonus', matBonusFromLoopMod.toExponential(2), 'LOOPMOD');
+  BonusDebugger.log('Running Total', staticMatBonus, 'RUNNING_TOTAL');
+  BonusDebugger.groupEnd();
 
-  // zeus install
-  const shipBonus =
-    isOuroEnabled && playerData.academy.badges.darkInnovation ? 3 : 1
+  // Zeus installs
+  BonusDebugger.group('Zeus Ship Installs');
+  const shipBonus = isOuroEnabled && playerData.academy.badges.darkInnovation ? 3 : 1;
+  BonusDebugger.log('Ship Bonus Multiplier (Ouro + Badge)', shipBonus, 'ZEUS_SHIP');
+  
   const zeus3Bonus = 1 + 0.25 * zeus.installs[2] * (zeus.crew || 0) * shipBonus
   staticMatBonus *= zeus3Bonus
-  console.log('zeus3Bonus', zeus3Bonus)
+  BonusDebugger.log('Zeus Install [2] Bonus', zeus3Bonus, 'ZEUS_INSTALL2');
+  BonusDebugger.log('  → (1 + 0.25 x installs[2] x crew x shipBonus)', null, 'ZEUS_INSTALL2');
+  
   const zeus6Bonus = 1 + 0.1 * zeus.installs[5] * (zeus.crew || 0) * shipBonus
   staticMatBonus *= zeus6Bonus
-  console.log('zeus6Bonus', zeus6Bonus)
+  BonusDebugger.log('Zeus Install [5] Bonus', zeus6Bonus, 'ZEUS_INSTALL5');
+  BonusDebugger.log('  → (1 + 0.1 x installs[5] x crew x shipBonus)', null, 'ZEUS_INSTALL5');
+  
+  BonusDebugger.log('Running Total', staticMatBonus, 'RUNNING_TOTAL');
+  BonusDebugger.groupEnd();
 
-  // ouro install
+  // Ouro installs
   if (isOuroEnabled) {
+    BonusDebugger.group('Ouro Ship Installs');
     const ouro5Bonus =
       Math.pow(1 + 0.005 * (ouro.installs[4] || 0), ouro.crew || 0) *
-      (ouro.installs[4] ? shipBonus : 1)
-    staticMatBonus *= getMatBonusFromOuro()
+      (ouro.installs[4] ? shipBonus : 1);
+    BonusDebugger.log('Ouro Install [4] Bonus', ouro5Bonus, 'OURO_INSTALL4');
+    BonusDebugger.log('  → (1 + 0.005 x installs[4])^crew x shipBonus', null, 'OURO_INSTALL4');
+    
+    const ouroMatBonus = getMatBonusFromOuro();
+    staticMatBonus *= ouroMatBonus
+    BonusDebugger.log('Ouro Material Bonus Total', ouroMatBonus, 'OURO_MATS');
+    
     staticMatBonus *= ouro5Bonus
+    BonusDebugger.log('Running Total', staticMatBonus, 'RUNNING_TOTAL');
+    BonusDebugger.groupEnd();
+  } else {
+    BonusDebugger.log('Ouro: DISABLED', 1, 'OURO_MATS');
   }
 
-  // shard milestone
+  // Shard milestones
+  BonusDebugger.group('Shard Milestones');
   const matBonusFromShardMilestone = getMatBonusFromShardMilestone()
-  console.log('mat bonus from shard milestone', matBonusFromShardMilestone)
   staticMatBonus *= matBonusFromShardMilestone
+  BonusDebugger.log('Shard Milestone Total Bonus', matBonusFromShardMilestone, 'SHARD');
+  BonusDebugger.log('Running Total', staticMatBonus, 'RUNNING_TOTAL');
+  BonusDebugger.groupEnd();
 
-  // research
+  // Research
+  BonusDebugger.group('Research Bonuses');
   const bonusFromResearch = getMatBonusFromResearch()
-  console.log('mat bonus from research', bonusFromResearch)
   staticMatBonus *= bonusFromResearch
+  BonusDebugger.log('Research Total Bonus', bonusFromResearch, 'RESEARCH');
+  BonusDebugger.log('Running Total', staticMatBonus, 'RUNNING_TOTAL');
+  BonusDebugger.groupEnd();
 
-  // diamond
-  staticMatBonus *= Math.pow(1.05, playerData.diamonds.special.materials || 0)
-  if (playerData.diamonds.ultima.materialBonus > 1)
-    staticMatBonus *= playerData.diamonds.ultima.materialBonus
-  if (playerData.diamonds.iapCollector) staticMatBonus *= 1.5
+  // Diamond bonuses
+  BonusDebugger.group('Diamond Bonuses');
+  const diamondSpecial = Math.pow(1.05, playerData.diamonds.special.materials || 0);
+  staticMatBonus *= diamondSpecial;
+  BonusDebugger.log('Diamond Special (1.05^level)', diamondSpecial, 'DIAMOND_SPECIAL');
+  
+  if (playerData.diamonds.ultima.materialBonus > 1) {
+    staticMatBonus *= playerData.diamonds.ultima.materialBonus;
+    BonusDebugger.log('Diamond Ultima Bonus', playerData.diamonds.ultima.materialBonus, 'DIAMOND_ULTIMA');
+  }
+  
+  if (playerData.diamonds.iapCollector) {
+    staticMatBonus *= 1.5;
+    BonusDebugger.log('IAP Collector Bonus', 1.5, 'DIAMOND_IAP');
+  }
+  BonusDebugger.log('Running Total', staticMatBonus, 'RUNNING_TOTAL');
+  BonusDebugger.groupEnd();
 
-  // proj
-  staticMatBonus *= Math.pow(1.75, playerData.academy.projectLevels[8])
+  // Project bonus
+  BonusDebugger.group('Project Bonuses');
+  const projectBonus = Math.pow(1.75, playerData.academy.projectLevels[8]);
+  staticMatBonus *= projectBonus
+  BonusDebugger.log('Project [8] Bonus (1.75^level)', projectBonus, 'PROJECT');
+  BonusDebugger.log('Running Total', staticMatBonus, 'RUNNING_TOTAL');
+  BonusDebugger.groupEnd();
+
+  BonusDebugger.log('FINAL STATIC MAT BONUS', staticMatBonus, 'FINAL');
+  BonusDebugger.groupEnd();
 
   return staticMatBonus
 }
@@ -427,8 +600,6 @@ function CalculateFarmYields(giveTotal = false) {
           farms[i].activeTime = farms[i].runTime
           for (let mat = 0; mat < farms[i].staticMats.length; mat++) {
             const isLastMat = mat === farms[i].staticMats.length - 1
-
-            console.log("Is last mat? " + isLastMat)
 
             const product = isLastMat
               ? farms[i].staticMats[mat]          // no bonus
