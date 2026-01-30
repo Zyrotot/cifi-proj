@@ -375,7 +375,10 @@ const getMatBonusFromOuro = () => {
   const gem3Bonus = relic20Bonus * (playerData.ouro.gemCreationNode3Bonus || 1);
   BonusDebugger.log('Creation Gem Node 3', playerData.ouro.gemCreationNode3Bonus || 1, 'GEM');
 
-  const ouroNerf = gem3Bonus * 0.0689;
+  const meltdownValue = gem3Bonus * (playerData.ouro.meltdown || 1);
+  BonusDebugger.log('Meltdown', playerData.ouro.meltdown || 1, 'MELTDOWN');
+
+  const ouroNerf = meltdownValue * 0.0689;
   BonusDebugger.log('Ouro Nerf', 0.0689, 'NERF');
 
   // console.log('Knox SoW Level: ', playerData.ouro.knoxSowLevel);
