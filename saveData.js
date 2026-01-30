@@ -318,6 +318,8 @@ const blankPlayer = {
     knoxSowLevel: 0,
     knoxMaxStage: 0,
     necrumStacks: 0,
+    eternityBonus: 0,
+    exo3: false,
   },
 }
 

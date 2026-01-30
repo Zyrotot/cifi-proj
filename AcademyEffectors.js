@@ -131,6 +131,13 @@ const sections = [
           '/ <label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Starts at 1, increases with ultima cap">1</label> <span class="text-super">*</c>',
         isOuro: true,
       },
+      {
+        id: 'eternityBoon',
+        type: 'number',
+        label: 'Boon: Eternity Bonus',
+        style: { width: 80 },
+        isOuro: true,
+      },
     ],
   },
   {
@@ -353,6 +360,7 @@ const sections = [
         label:
           '<label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Local Fragment Magnet">Gadget 12</label>',
       },
+      { id: 'exo3', type: 'checkbox', label: 'Exodus 3 gem' },
       { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation Badge' },
       {
         id: 'creationgemnode3bonus',
@@ -623,6 +631,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set darkinno(value) {
     playerData.academy.badges.darkInnovation = value
   },
+  set exo3(value) {
+    playerData.ouro.exo3 = value
+  },
   set creationgemnode3bonus(value) {
     playerData.ouro.gemCreationNode3Bonus = value
   },
@@ -634,6 +645,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   set necrumStacks(value) {
     playerData.ouro.necrumStacks = value
+  },
+  set eternityBoon(value) {
+    playerData.ouro.eternityBoon = value
   },
   get ouroboros() {
     return playerData.ouro.enabled
@@ -659,6 +673,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   get darkinno() {
     return playerData.academy.badges.darkInnovation
   },
+  get exo3() {
+    return playerData.ouro.exo3
+  },
   get creationgemnode3bonus() {
     return playerData.ouro.gemCreationNode3Bonus
   },
@@ -670,6 +687,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get necrumStacks() {
     return playerData.ouro.necrumStacks
+  },
+  get eternityBoon() {
+    return playerData.ouro.eternityBoon
   },
 }
 
@@ -870,6 +890,7 @@ academyEffectorPortal.pages.default.updateFunction = function (e) {
         'knoxSowLevel',
         'knoxMaxStage',
         'necrumStacks',
+        'eternityBoon',
       ].indexOf(e.target.id) > -1
     ) {
       portalPanel.dataLinkage[e.target.id] = parseFloat(e.target.value)

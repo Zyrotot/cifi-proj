@@ -279,8 +279,11 @@ const getMatBonusFromLoopMod = () => {
   
   const sekhur5Bonus = (playerData.ouro.enabled && Math.pow(1.25, playerData.loopMods.sekhur5));
   BonusDebugger.log('Sekhur5', sekhur5Bonus, 'LOOPMOD');
+
+  const eternityBonus = (playerData.ouro.enabled && playerData.ouro.eternityBoon);
+  BonusDebugger.log('Eternity Boon', eternityBonus, 'LOOPMOD');
   
-  const result = beyondersBonus * swarmBonus * expansionBonus * materialHaulingBonus * loopingBonus * productivityBonus * sekhur5Bonus;
+  const result = beyondersBonus * swarmBonus * expansionBonus * materialHaulingBonus * loopingBonus * productivityBonus * sekhur5Bonus * eternityBonus;
   BonusDebugger.log('Final Loop Mod Bonus:', result);
   BonusDebugger.groupEnd();
   
@@ -381,9 +384,6 @@ const getMatBonusFromOuro = () => {
   const ouroNerf = meltdownValue * 0.0689;
   BonusDebugger.log('Ouro Nerf', 0.0689, 'NERF');
 
-  // console.log('Knox SoW Level: ', playerData.ouro.knoxSowLevel);
-  // console.log('Knox Max Stage: ', playerData.ouro.knoxMaxStage);
-
   const knoxBonusMultiplier = Math.pow(
     1 + 0.1 * playerData.ouro.knoxSowLevel,
     playerData.ouro.knoxMaxStage
@@ -477,7 +477,11 @@ function GetStaticMatBonus() {
   }
   
   if (playerData.diamonds.iapCollector) {
-    staticMatBonus *= 100;
+    if (playerData.ouro.exo3) {
+      staticMatBonus *= 100;
+    } else {
+      staticMatBonus *= 1.5;
+    }
     BonusDebugger.log('IAP Collector', 100, 'IAP');
   }
   
