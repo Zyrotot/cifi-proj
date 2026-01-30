@@ -72,7 +72,8 @@ const sections = [
         id: 'swarm',
         type: 'number',
         label: 'Rule of the Swarm',
-        text: '/ 30',
+        textHtml:
+          '/ <label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Starts at 30, increases with ultima cap">30</label> <span class="text-super">*</c>',
         info: {
           type: 'mod',
           icon: 'rule-of-the-swarm.jpg',
@@ -98,7 +99,8 @@ const sections = [
         id: 'productivity',
         type: 'number',
         label: 'Rule of Productivity',
-        text: '/ 10',
+        textHtml:
+          '/ <label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Starts at 10, increases with ultima cap">10</label> <span class="text-super">*</c>',
         info: {
           type: 'mod',
           icon: 'rule-of-productivity.jpg',
@@ -111,7 +113,8 @@ const sections = [
         id: 'looping',
         type: 'number',
         label: 'Rule of Looping',
-        text: '/ 10',
+        textHtml:
+          '/ <label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Starts at 10, increases with ultima cap">10</label> <span class="text-super">*</c>',
         info: {
           type: 'mod',
           icon: 'rule-of-looping.jpg',
@@ -124,7 +127,8 @@ const sections = [
         id: 'sekhur5',
         type: 'number',
         label: 'Planet Sekhur-5',
-        text: '/ 1',
+        textHtml:
+          '/ <label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Starts at 1, increases with ultima cap">1</label> <span class="text-super">*</c>',
         isOuro: true,
       },
     ],
@@ -353,7 +357,7 @@ const sections = [
       {
         id: 'knoxSowLevel',
         type: 'number',
-        label: 'Knox SoW Modifier Level,',
+        label: 'Knox SoW Modifier Level',
         style: { width: 80 },
       },
       {
