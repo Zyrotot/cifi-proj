@@ -309,12 +309,6 @@ const sections = [
     isOuro: true,
     children: [
       {
-        id: 'meltdown',
-        type: 'number',
-        label: 'Meltdown Effect',
-        style: { width: 80 },
-      },
-      {
         id: 'relic3',
         type: 'number',
         label:
@@ -598,9 +592,6 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set ouroboros(value) {
     playerData.ouro.enabled = value
   },
-  set meltdown(value) {
-    playerData.ouro.meltdown = value
-  },
   set relic3(value) {
     playerData.relics.relic3 = value
   },
@@ -633,9 +624,6 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get ouroboros() {
     return playerData.ouro.enabled
-  },
-  get meltdown() {
-    return playerData.ouro.meltdown
   },
   get relic3() {
     return playerData.relics.relic3
@@ -860,7 +848,6 @@ academyEffectorPortal.pages.default.updateFunction = function (e) {
   if (e.target.type === 'number') {
     if (
       [
-        'meltdown',
         'ultimamatbonus',
         'creationgemnode3bonus',
         'knoxSowLevel',

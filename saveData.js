@@ -313,7 +313,6 @@ const blankPlayer = {
   },
   ouro: {
     enabled: false,
-    meltdown: 0.0001,
     gemCreationNode3Bonus: 1,
     knoxSowLevel: 0,
     knoxMaxStage: 0,
@@ -346,11 +345,6 @@ function UpdatePlayerData() {
 function fixPlayerData() {
   if (!playerData.ouro) {
     playerData.ouro = blankPlayer.ouro
-  }
-
-  if (playerData.meltdown) {
-    playerData.ouro.meltdown = playerData.meltdown
-    delete playerData.meltdown
   }
 
   if (!playerData.diamonds.ultima) {
