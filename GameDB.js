@@ -116,9 +116,9 @@ let GameDB = {
         isTimeRounded: true,
       },
       {
-        id: 34,
+        id: 34,  // Missing data
         baseTime: 1875000,
-        maxPop: 4000,
+        maxPop: 0,
         baseAP: 2000000,
         baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
         isTimeRounded: true,
@@ -151,9 +151,9 @@ let GameDB = {
         isTimeRounded: true,
       },
       {
-        id: 44,
+        id: 44,  // Missing data
         baseTime: 9750000,
-        maxPop: 20000,
+        maxPop: 0,
         baseAP: 6700000,
         baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
         isTimeRounded: true,
