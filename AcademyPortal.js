@@ -277,10 +277,10 @@ const getMatBonusFromLoopMod = () => {
   const productivityBonus = Math.pow(1 + 0.002 * playerData.loopMods.productivity, playerData.level);
   BonusDebugger.log('Productivity', productivityBonus, 'LOOPMOD');
   
-  const sekhur5Bonus = (playerData.ouro.enabled && Math.pow(1.25, playerData.loopMods.sekhur5));
+  const sekhur5Bonus = ((playerData.ouro.enabled && Math.pow(1.25, playerData.loopMods.sekhur5)) || 1);
   BonusDebugger.log('Sekhur5', sekhur5Bonus, 'LOOPMOD');
 
-  const eternityBonus = (playerData.ouro.enabled && playerData.ouro.eternityBoon);
+  const eternityBonus = ((playerData.ouro.enabled && playerData.ouro.eternityBoon) || 1);
   BonusDebugger.log('Eternity Boon', eternityBonus, 'LOOPMOD');
   
   const result = beyondersBonus * swarmBonus * expansionBonus * materialHaulingBonus * loopingBonus * productivityBonus * sekhur5Bonus * eternityBonus;
