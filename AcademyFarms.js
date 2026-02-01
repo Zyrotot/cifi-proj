@@ -810,7 +810,7 @@ function populateYield() {
   }
 }
 
-function genZeusRank(missionCount, duration, yeld_hour) {
+function genZeusRank(missionCount, duration, yield_hour) {
   const zeusReqs = GameDB.fleet.zeus.rankRequirements
   const zeusTable = $(portalPanel.zeusTable)
   const container = $(portalPanel.rankTable)
@@ -831,7 +831,7 @@ function genZeusRank(missionCount, duration, yeld_hour) {
 
     const fragFromMissionPerHr = numMissionPerHr * (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12  / 10) || 0))
     BonusDebugger.log('Fragments from mission per hour', fragFromMissionPerHr, 'FRAG');
-    const fragFromfarmMissions = yeld_hour
+    const fragFromfarmMissions = yield_hour
     BonusDebugger.log('Fragments from farm missions', fragFromfarmMissions, 'FRAG');
     const fragmentationIAPBonus = (playerData.diamonds.iapFragmentation ? 1.1 : 1);
     BonusDebugger.log('Fragmentation bonus', fragmentationIAPBonus, 'FRAG');

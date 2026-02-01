@@ -562,6 +562,8 @@ function CalculateFarmYields(giveTotal = false) {
     }
   }
 
+  const ts7Multiplier = (playerData.ouro.enabled && playerData.ouro.ts.ts7) ? 2 : 1
+
   let missionYield = farms.reduce((acc, farm) => acc + farm.farmCount, 0)
   let missionContrib = farms.reduce((acc, farm) => {
     acc[farm.id] = farm.farmCount
@@ -598,8 +600,8 @@ function CalculateFarmYields(giveTotal = false) {
             const isLastMat = mat === farms[i].staticMats.length - 1
 
             const product = isLastMat
-              ? farms[i].staticMats[mat]          // no bonus
-              : farms[i].staticMats[mat] * staticMatBonus * dynamicMatBonus
+              ? farms[i].staticMats[mat] * ts7Multiplier  // only TS7 applies
+              : farms[i].staticMats[mat] * staticMatBonus * dynamicMatBonus * ts7Multiplier 
             matYield[mat] += product
             if (matContrib[mat][farms[i].id]) {
               matContrib[mat][farms[i].id] += product
@@ -608,7 +610,7 @@ function CalculateFarmYields(giveTotal = false) {
             }
           }
 
-          rankProgress++
+          rankProgress += ts7Multiplier
         }
       }
 
@@ -651,12 +653,13 @@ function CalculateFarmYields(giveTotal = false) {
         const isLastMat = mat === farm.staticMats.length - 1
 
         const totalMat = isLastMat
-          ? staticMat * farm.farmCount
+          ? staticMat * farm.farmCount * ts7Multiplier
           : staticMat *
           staticMatBonus *
           currentZeusRankBonus *
           zeusRankBonusOverTime *
-          farm.farmCount
+          farm.farmCount *
+          ts7Multiplier
         matYield[mat] += totalMat
         matContrib[mat][farm.id] = totalMat
       })
@@ -664,7 +667,7 @@ function CalculateFarmYields(giveTotal = false) {
   }
 
   return {
-    missionYield,
+    missionYield: missionYield * ts7Multiplier,
     missionContrib,
     matYield,
     matContrib,

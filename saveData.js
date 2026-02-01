@@ -323,6 +323,9 @@ const blankPlayer = {
     necrumStacks: 0,
     eternityBonus: 0,
     exo3: false,
+    ts: {
+      ts7: false,
+    }
   },
 }
 
@@ -393,6 +396,10 @@ function fixPlayerData() {
         )
       }
     }
+  }
+
+  if (!playerData.ouro.ts) {
+    playerData.ouro.ts = blankPlayer.ouro.ts
   }
 
   if (playerData.version < blankPlayer.version) {

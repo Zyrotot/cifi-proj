@@ -372,6 +372,7 @@ const sections = [
       { id: 'exo3', type: 'checkbox', label: 'Exodus 3 gem' },
       { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation Badge' },
       { id: 'innovation2', type: 'checkbox', label: 'Innovation #2 Badge' },
+      { id: 'ts7', type: 'checkbox', label: 'Trait Sphere 7' },
       {
         id: 'creationgemnode3bonus',
         type: 'number',
@@ -653,6 +654,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set darkinno(value) {
     playerData.academy.badges.darkInnovation = value
   },
+  set ts7(value) {
+    playerData.ouro.ts.ts7 = value
+  },
   set innovation2(value) {
     playerData.academy.badges.innovation2 = value
   },
@@ -697,6 +701,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get darkinno() {
     return playerData.academy.badges.darkInnovation
+  },
+  get ts7() {
+    return playerData.ouro.ts.ts7
   },
   get innovation2() {
     return playerData.academy.badges.innovation2
