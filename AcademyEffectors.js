@@ -311,6 +311,14 @@ const sections = [
         text: 'Lv2: Material x9; Lv5: Speed *1.5',
         textClassName: 'font-normal',
       },
+      {
+        id: 'research87',
+        type: 'select',
+        label: 'Research 87',
+        maxLevel: 6,
+        text: 'Material: Lv1 x13, Lv2 x21, Lv3 x34, Lv4 x55, Lv5 x89, Lv6 x144',
+        textClassName: 'font-normal',
+      },
     ].map((i) => {
       i.labelClassName = 'font-normal'
       return i
@@ -550,6 +558,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set construction2(value) {
     playerData.research.construction[1] = value
   },
+  set research87(value) {
+    playerData.research.research87 = value
+  },
   set specialmats(value) {
     playerData.diamonds.special.materials = value
   },
@@ -601,6 +612,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get construction2() {
     return playerData.research.construction[1]
+  },
+  get research87() {
+    return playerData.research.research87
   },
   get specialmats() {
     return playerData.diamonds.special.materials

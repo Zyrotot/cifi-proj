@@ -361,8 +361,17 @@ const getMatBonusFromResearch = () => {
   const mission4_5 = (playerData.research.mission[4] > 5 ? 5 : 1);
   const mission4Bonus = mission4_1 * mission4_3 * mission4_5;
   BonusDebugger.log('Research 77', mission4Bonus, 'RESEARCH');
-  
-  const bonus = mission0Bonus * mission1Bonus * perfection1Bonus * mission3Bonus * perfection2Bonus * perfection3Bonus * mission4Bonus;
+
+  const research87_1 = (playerData.research.research87 >= 1 ? 13 : 1);
+  const research87_2 = (playerData.research.research87 >= 2 ? 21 : 1);
+  const research87_3 = (playerData.research.research87 >= 3 ? 34 : 1);
+  const research87_4 = (playerData.research.research87 >= 4 ? 55 : 1);
+  const research87_5 = (playerData.research.research87 >= 5 ? 89 : 1);
+  const research87_6 = (playerData.research.research87 >= 6 ? 144 : 1);
+  const research87Bonus = research87_1 * research87_2 * research87_3 * research87_4 * research87_5 * research87_6;
+  BonusDebugger.log('Research 87', research87Bonus, 'RESEARCH');
+
+  const bonus = mission0Bonus * mission1Bonus * perfection1Bonus * mission3Bonus * perfection2Bonus * perfection3Bonus * mission4Bonus * research87Bonus;
   BonusDebugger.log('Final Research Bonus:', bonus);
   BonusDebugger.groupEnd();
 

@@ -96,6 +96,7 @@ const blankPlayer = {
       0, // (1) Project Cost = (level > 1 ? 1.5 : 1) * (level > 3 ? 2 : 1) * (level > 5 ? 2.5 : 1)]
       0, // (2) Project Cost = (level > 1 ? 2 : 1) * (level > 3 ? 3 : 1) * (level > 5 ? 4 : 1)]
     ],
+    research87: 0, // (1-6) Material: Lv1 x13, Lv2 x21, Lv3 x34, Lv4 x55, Lv5 x89, Lv6 x144
   },
   academy: {
     personnel: [
