@@ -1,15 +1,15 @@
 const CONTRIBUTORS = [
   {
-    name: 'sirrebrl',
-    github: 'https://github.com/sirrebrl',
-    page: 'https://sirrebrl.github.io/CIFIsuper/',
-    role: 'Creator',
-  },
-  {
     name: 'zyrotot',
     github: 'https://github.com/Zyrotot',
     page: 'https://zyrotot.github.io/cifi-proj/',
     role: 'Maintaner',
+  },
+  {
+    name: 'sirrebrl',
+    github: 'https://github.com/sirrebrl',
+    page: 'https://sirrebrl.github.io/CIFIsuper/',
+    role: 'Creator',
   },
   {
     name: '1pete',

@@ -225,6 +225,7 @@ const sections = [
         isOuro: true,
       },
       { id: 'iapCollector', type: 'checkbox', label: 'IAP: Collectors Pack' },
+      { id: 'iapFragmentation', type: 'checkbox', label: 'IAP: Fragmentation Pack', isOuro: true },
     ],
   },
   {
@@ -557,6 +558,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set iapCollector(value) {
     playerData.diamonds.iapCollector = value
   },
+  set iapFragmentation(value) {
+    playerData.diamonds.iapFragmentation = value
+  },
 
   get wonderous() {
     return playerData.shardMilestones[25]
@@ -605,6 +609,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get iapCollector() {
     return playerData.diamonds.iapCollector
+  },
+  get iapFragmentation() {
+    return playerData.diamonds.iapFragmentation
   },
 
   set ouroboros(value) {

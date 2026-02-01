@@ -301,6 +301,7 @@ const blankPlayer = {
       materialBonus: 1,
     },
     iapCollector: false,
+    iapFragmentation: false,
   },
   relics: {
     relic3: 0,

@@ -766,6 +766,8 @@ function populateYield() {
   // console.log(yieldData)
   let duration = yieldData.duration
 
+  const fragWield = yieldData.matYield[8]
+
   yieldData.matYield = yieldData.matYield.map((yieldValue) =>
     formatLargeInteger(yieldValue),
   )
@@ -792,7 +794,7 @@ function populateYield() {
       {},
     )
 
-    genZeusRank(yieldData.missionYield, duration, yieldData.matYield[8])
+    genZeusRank(yieldData.missionYield, duration, fragWield)
     genProduction(portalPanel.missionProd, yieldData.missionContrib)
     genProduction(portalPanel.apProd, apContrib)
     genProduction(portalPanel.difarProd, yieldData.matContrib[0])
@@ -825,15 +827,26 @@ function genZeusRank(missionCount, duration, yeld_hour) {
     )
   zeusTable.append(missionRate)
   if (playerData.ouro.enabled) {
-    const relicFragPerHr =
-      numMissionPerHr * (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12  / 10) || 0)) + yeld_hour
+    BonusDebugger.group('Fragments rate');
+
+    const fragFromMissionPerHr = numMissionPerHr * (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12  / 10) || 0))
+    BonusDebugger.log('Fragments from mission per hour', fragFromMissionPerHr, 'FRAG');
+    const fragFromfarmMissions = yeld_hour
+    BonusDebugger.log('Fragments from farm missions', fragFromfarmMissions, 'FRAG');
+    const fragmentationIAPBonus = (playerData.diamonds.iapFragmentation ? 1.1 : 1);
+    BonusDebugger.log('Fragmentation bonus', fragmentationIAPBonus, 'FRAG');
+  
+    const totalRelicFragPerHr = (fragFromMissionPerHr + fragFromfarmMissions) * fragmentationIAPBonus;
+
+    BonusDebugger.log('Total fragments rate per hour', totalRelicFragPerHr, 'TOTAL');
+    BonusDebugger.groupEnd();
       zeusTable.append(
       $('<tr>')
         .append($('<td>').text('Relic Fragment'))
         .append(
           $('<td>')
             .addClass('text-end font-normal')
-            .text(formatFloat(relicFragPerHr) + ' / hr'),
+            .text(formatFloat(totalRelicFragPerHr) + ' / hr'),
         ),
     )
     zeusTable.append(
@@ -842,7 +855,7 @@ function genZeusRank(missionCount, duration, yeld_hour) {
         .append(
           $('<td>')
             .addClass('text-end font-normal')
-            .text(formatFloat(relicFragPerHr * 24) + ' / d'),
+            .text(formatFloat(totalRelicFragPerHr * 24) + ' / d'),
         ),
     )
   }
