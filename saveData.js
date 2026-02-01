@@ -291,6 +291,7 @@ const blankPlayer = {
       engineering: false,
 
       darkInnovation: false,
+      innovation2: false,
     },
   },
   diamonds: {

@@ -424,8 +424,13 @@ function GetStaticMatBonus() {
 
   // Zeus installs
   BonusDebugger.group('Zeus Ship Installs');
-  const shipBonus = isOuroEnabled && playerData.academy.badges.darkInnovation ? 3 : 1;
-  
+  const darkInnoBonus = isOuroEnabled && playerData.academy.badges.darkInnovation ? 3 : 1;
+  const inno2Bonus = isOuroEnabled && playerData.academy.badges.innovation2 ? 222 : 1;
+  const shipBonus = isOuroEnabled ? (darkInnoBonus * inno2Bonus) : 1;
+
+  BonusDebugger.log('Dark Innovation', playerData.academy.badges.darkInnovation, 'ZEUS_MULT');
+  BonusDebugger.log('Innovation #2', playerData.academy.badges.innovation2, 'ZEUS_MULT');
+
   const zeus3Bonus = 1 + 0.25 * zeus.installs[2] * (zeus.crew || 0) * shipBonus
   staticMatBonus *= zeus3Bonus
   BonusDebugger.log('Zeus Install 2', zeus3Bonus, 'ZEUS_INSTALL2');
