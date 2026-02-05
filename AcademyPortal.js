@@ -402,9 +402,12 @@ const getMatBonusFromOuro = () => {
   const necrumBonusMultiplier = 1.002 ** playerData.ouro.necrumStacks || 1;
   BonusDebugger.log('Necrum Multiplier', necrumBonusMultiplier, 'NECRUM');
   
-  const necrumBonus = drillBonus * necrumBonusMultiplier;
+  const temporalGem3Bonus = playerData.ouro.temporalGem3 ? Math.pow(1.005, playerData.loopReset, ) : 1;
+  BonusDebugger.log('Temporal Gem 3# Node Bonus', temporalGem3Bonus, 'TOTAL');
+
+  const necrumBonus = drillBonus * necrumBonusMultiplier * temporalGem3Bonus;
   BonusDebugger.log('Total Ouro Material Bonus', necrumBonus, 'TOTAL');
-  
+
   BonusDebugger.groupEnd();
   return necrumBonus;
 }

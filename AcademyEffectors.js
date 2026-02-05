@@ -20,6 +20,12 @@ const sections = [
         label: 'Loops Filled',
         style: { width: 80 },
       },
+      {
+        id: 'loopReset',
+        type: 'number',
+        label: 'Number of Loops Reset',
+        style: { width: 80 },
+      },
       { id: 'engineering', type: 'checkbox', label: 'Engineering Badge' },
       { id: 'ouroboros', type: 'checkbox', label: 'Ouroboros Unlocked' },
     ],
@@ -369,7 +375,8 @@ const sections = [
         label:
           '<label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Local Fragment Magnet">Gadget 12</label>',
       },
-      { id: 'exo3', type: 'checkbox', label: 'Exodus 3 gem' },
+      { id: 'exo3', type: 'checkbox', label: 'Exodus Gem #3 node' },
+      { id: 'temporalGem3', type: 'checkbox', label: 'Temporal Gem #3 node' },
       { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation Badge' },
       { id: 'innovation2', type: 'checkbox', label: 'Innovation #2 Badge' },
       { id: 'ts7', type: 'checkbox', label: 'Trait Sphere 7' },
@@ -408,6 +415,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set loopsfilled(value) {
     playerData.loopsFilled = value
   },
+  set loopReset(value) {
+    playerData.loopReset = value
+  },
   set zeusrankbenefits(value) {
     playerData.loopMods.zeusRankBenefits = value
   },
@@ -438,6 +448,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get loopsfilled() {
     return playerData.loopsFilled
+  },
+  get loopReset() {
+    return playerData.loopReset
   },
   get zeusrankbenefits() {
     return playerData.loopMods.zeusRankBenefits
@@ -663,6 +676,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set exo3(value) {
     playerData.ouro.exo3 = value
   },
+  set temporalGem3(value) {
+    playerData.ouro.temporalGem3 = value
+  },
   set creationgemnode3bonus(value) {
     playerData.ouro.gemCreationNode3Bonus = value
   },
@@ -710,6 +726,9 @@ academyEffectorPortal.pages.default.dataLinkage = {
   },
   get exo3() {
     return playerData.ouro.exo3
+  },
+  get temporalGem3() {
+    return playerData.ouro.temporalGem3
   },
   get creationgemnode3bonus() {
     return playerData.ouro.gemCreationNode3Bonus

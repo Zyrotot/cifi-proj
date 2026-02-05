@@ -12,6 +12,7 @@ const blankPlayer = {
   },
   level: 0, // Player level
   loopsFilled: 0,
+  loopReset: 0,
   fleet: {
     zeus: {
       evo: 0,
@@ -316,6 +317,7 @@ const blankPlayer = {
     necrumStacks: 0,
     eternityBonus: 0,
     exo3: false,
+    temporalGem3: false,
     ts: {
       ts7: false,
     }
