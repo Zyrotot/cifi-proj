@@ -403,6 +403,10 @@ function fixPlayerData() {
     }
   }
 
+  if (!playerData.loopReset) {
+    playerData.loopReset = 0
+  }
+
   newResearch = blankPlayer.research
   isLegacyResearch = false
 
