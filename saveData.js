@@ -5,7 +5,7 @@ PLAYER DATA CHANGE LOG
 */
 
 const blankPlayer = {
-  version: 15,
+  version: 16,
   activePortal: 'academyEffector',
   colorProfile: {
     academyProjects: ['#444444', '#CCCC44', '#44CC44', '#4444CC'],
@@ -403,7 +403,7 @@ function fixPlayerData() {
     }
   }
 
-  if (!playerData.loopReset) {
+  if (!playerData.hasOwnProperty(loopReset)) {
     playerData.loopReset = 0
   }
 
