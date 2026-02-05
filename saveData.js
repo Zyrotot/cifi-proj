@@ -398,6 +398,7 @@ function fixPlayerData() {
   }
 
   newResearch = blankPlayer.research
+  isLegacyResearch = false
 
   if (Array.isArray(playerData.research.mission)) {
     newResearch.research43 = playerData.research.mission[0]
@@ -407,6 +408,7 @@ function fixPlayerData() {
     newResearch.research77 = playerData.research.mission[4]
 
     delete playerData.mission
+    isLegacyResearch = true
   }
 
   if (Array.isArray(playerData.research.perfection)) {
@@ -415,6 +417,7 @@ function fixPlayerData() {
     newResearch.research80 = playerData.research.perfection[3]
 
     delete playerData.perfection
+    isLegacyResearch = true
   }
 
   if (Array.isArray(playerData.research.construction)) {
@@ -422,12 +425,14 @@ function fixPlayerData() {
     newResearch.research80 = playerData.research.construction[1]
 
     delete playerData.construction
+    isLegacyResearch = true
   }
 
   newResearch.research87 = playerData.research.research87 || 0
 
-  playerData.research = newResearch
-
+  if (isLegacyResearch) {
+    playerData.research = newResearch
+  }
   if (playerData.version < blankPlayer.version) {
     playerData.version = blankPlayer.version
     UpdatePlayerData()

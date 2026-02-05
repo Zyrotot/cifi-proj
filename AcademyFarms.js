@@ -707,11 +707,10 @@ function PopulateTiming() {
       timeEl.classList.toggle('is-capped', datum.isCapped)
       timeEl.setAttribute('data-bs-title', datum.rawTime || '-')
       portalPanel[`farm${planet}${farm}mat`].innerText = farmInfo.baseMats
-        .map((a, i, arr) => {
+        .map((a, i) => {
           if (a === 0) return null
 
-          const isLast = i === arr.length - 1
-          const mat = isLast ? a : matBonus * a
+          const mat = matBonus * a
 
           return (
             GameDB.academy.materials[i] +
@@ -766,8 +765,6 @@ function populateYield() {
   // console.log(yieldData)
   let duration = yieldData.duration
 
-  const fragWield = yieldData.matYield[8]
-
   yieldData.matYield = yieldData.matYield.map((yieldValue) =>
     formatLargeInteger(yieldValue),
   )
@@ -794,7 +791,7 @@ function populateYield() {
       {},
     )
 
-    genZeusRank(yieldData.missionYield, duration, fragWield)
+    genZeusRank(yieldData.missionYield, duration, yieldData.missionContrib)
     genProduction(portalPanel.missionProd, yieldData.missionContrib)
     genProduction(portalPanel.apProd, apContrib)
     genProduction(portalPanel.difarProd, yieldData.matContrib[0])
@@ -810,7 +807,7 @@ function populateYield() {
   }
 }
 
-function genZeusRank(missionCount, duration, yield_hour) {
+function genZeusRank(missionCount, duration, missionContrib) {
   const zeusReqs = GameDB.fleet.zeus.rankRequirements
   const zeusTable = $(portalPanel.zeusTable)
   const container = $(portalPanel.rankTable)
@@ -829,10 +826,19 @@ function genZeusRank(missionCount, duration, yield_hour) {
   if (playerData.ouro.enabled) {
     BonusDebugger.group('Fragments rate');
 
-    const fragFromMissionPerHr = numMissionPerHr * (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12  / 10) || 0))
+    const fragPerMission = (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12  / 10) || 0))
+    BonusDebugger.log('Fragments per mission', fragPerMission, 'FRAG');
+
+    const fragFromMissionPerHr = numMissionPerHr * fragPerMission
     BonusDebugger.log('Fragments from mission per hour', fragFromMissionPerHr, 'FRAG');
-    const fragFromfarmMissions = yield_hour
+    
+    const fragFromfarmMissions = Object.entries(missionContrib).reduce((total, [farmId, count]) => {
+      const farm = GameDB.academy.farms.find(f => f.id.toString() === farmId)
+      const farmFragBonus = (farm?.fragBonus || 0)
+      return total + (count * fragPerMission * farmFragBonus)
+    }, 0)
     BonusDebugger.log('Fragments from farm missions', fragFromfarmMissions, 'FRAG');
+    
     const fragmentationIAPBonus = (playerData.diamonds.iapFragmentation ? 1.1 : 1);
     BonusDebugger.log('Fragmentation bonus', fragmentationIAPBonus, 'FRAG');
   

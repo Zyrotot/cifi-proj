@@ -12,8 +12,7 @@ let GameDB = {
       'Organium',
       'Adamorphium',
       'Moskom',
-      'Darkseid',
-      'Fragments'
+      'Darkseid'
     ],
     // baseTimes are in minutes
     farms: [
@@ -49,8 +48,8 @@ let GameDB = {
         baseTime: 6000,
         maxPop: 120,
         baseAP: 1200,
-        // Fragments
-        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0.006],
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0],
+        fragBonus: 1,
         isTimeRounded: false,
       },
       {
@@ -85,7 +84,8 @@ let GameDB = {
         baseTime: 132000,
         maxPop: 1000,
         baseAP: 23000,
-        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0.028],
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0],
+        fragBonus: 5,
         isTimeRounded: true,
       },
       {
@@ -116,11 +116,12 @@ let GameDB = {
         isTimeRounded: true,
       },
       {
-        id: 34,  // Missing data
-        baseTime: 1875000,
-        maxPop: 0,
-        baseAP: 2000000,
-        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        id: 34,
+        baseTime: 3900000,
+        maxPop: 8000,
+        baseAP: 2000000,  // AP is probably wrong
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0],
+        fragBonus: 50,
         isTimeRounded: true,
       },
       {
@@ -151,11 +152,12 @@ let GameDB = {
         isTimeRounded: true,
       },
       {
-        id: 44,  // Missing data
-        baseTime: 9750000,
-        maxPop: 0,
-        baseAP: 6700000,
-        baseMats: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        id: 44,
+        baseTime: 19500000,
+        maxPop: 40000,
+        baseAP: 6700000,  // AP is probably wrong
+        baseMats: [0, 0, 0, 0, 0, 0, 0, 0],
+        fragBonus: 200,
         isTimeRounded: true,
       },
     ], // END .farms
