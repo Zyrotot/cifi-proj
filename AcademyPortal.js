@@ -15,45 +15,37 @@ const BonusDebugger = {
 
 function GetMissionSpeedBonus() {
   BonusDebugger.group('Mission Speed Bonus Calculation');
-  
-  let missionSpeedBonus = 1;
-  
+    
   const swarmBonus = Math.pow(1.0311, playerData.loopMods.swarm);
-  missionSpeedBonus *= swarmBonus;
   BonusDebugger.log('Swarm', swarmBonus, 'SWARM');
   
-  const missionResearchBonus = Math.pow(
+  const research58Bonus = Math.pow(
     1.05,
-    Math.floor((playerData.research.mission[2] + 1) / 2),
+    Math.floor((playerData.research.research58 + 1) / 2),
   );
-  missionSpeedBonus *= missionResearchBonus;
-  BonusDebugger.log('Research 58', missionResearchBonus, 'RESEARCH');
+  BonusDebugger.log('Research 58', research58Bonus, 'RESEARCH');
   
-  const perfection2Bonus = (playerData.research.perfection[2] > 4) + 1;
-  missionSpeedBonus *= perfection2Bonus;
-  BonusDebugger.log('Research 70', perfection2Bonus, 'RESEARCH');
+  const research70Bonus = (playerData.research.research70 > 4) ? 2 : 1;
+  BonusDebugger.log('Research 70', research70Bonus, 'RESEARCH');
   
-  const perfection3Bonus = (playerData.research.perfection[3] > 4) + 1;
-  missionSpeedBonus *= perfection3Bonus;
-  BonusDebugger.log('Research 80', perfection3Bonus, 'RESEARCH');
-  
-  if (playerData.academy.badges.engineering) {
-    missionSpeedBonus *= 2;
-    BonusDebugger.log('Engineering Badge', 2, 'BADGE');
-  }
-  
+  const research80Bonus = (playerData.research.research80 > 4) ? 1.5 : 1;
+  BonusDebugger.log('Research 80', research80Bonus, 'RESEARCH');
+
+  const engineeringBadgeBonus = playerData.academy.badges.engineering ? 2 : 1;
+  BonusDebugger.log('Engineering Badge', engineeringBadgeBonus, 'BADGE');
+
   const productivityBonus = Math.pow(1.1, playerData.loopMods.productivity);
-  missionSpeedBonus *= productivityBonus;
   BonusDebugger.log('Productivity', productivityBonus, 'LOOPMOD');
   
   const relic3Bonus = 1 + 0.03 * (playerData.relics.relic3 || 0);
-  missionSpeedBonus *= relic3Bonus;
   BonusDebugger.log('Relic 3', relic3Bonus, 'RELIC');
+
+  bonus = swarmBonus * research58Bonus * research70Bonus * research80Bonus * engineeringBadgeBonus * productivityBonus * relic3Bonus;
   
-  BonusDebugger.log('Final Mission Speed Bonus', missionSpeedBonus || 1, 'TOTAL');
+  BonusDebugger.log('Final Mission Speed Bonus', bonus || 1, 'TOTAL');
   BonusDebugger.groupEnd();
   
-  return missionSpeedBonus || 1;
+  return bonus || 1;
 }
 
 function CalculateFarmTimes(getRawTime = false) {
@@ -335,32 +327,32 @@ const getMatBonusFromShardMilestone = () => {
 const getMatBonusFromResearch = () => {
   BonusDebugger.group('Research Bonuses');
   
-  const mission0Bonus = Math.pow(1.5, Math.floor(playerData.research.mission[0] / 2));
-  BonusDebugger.log('Research 43', mission0Bonus, 'RESEARCH');
+  const research43Bonus = Math.pow(1.5, Math.floor(playerData.research.research43 / 2));
+  BonusDebugger.log('Research 43', research43Bonus, 'RESEARCH');
   
-  const mission1Bonus = Math.pow(1.75, Math.floor(playerData.research.mission[1] / 2));
-  BonusDebugger.log('Research 55', mission1Bonus, 'RESEARCH');
-  
-  const perfection1Bonus = (1 + 4 * (playerData.research.perfection[1] > 1));
-  BonusDebugger.log('Research 60', perfection1Bonus, 'RESEARCH');
-  
-  const mission3_1 = (playerData.research.mission[3] > 1 ? 2 : 1);
-  const mission3_3 = (playerData.research.mission[3] > 3 ? 3 : 1);
-  const mission3_5 = (playerData.research.mission[3] > 5 ? 4 : 1);
-  const mission3Bonus = mission3_1 * mission3_3 * mission3_5;
-  BonusDebugger.log('Research 67', mission3Bonus, 'RESEARCH');
-  
-  const perfection2Bonus = (1 + 4 * (playerData.research.perfection[2] > 1));
-  BonusDebugger.log('Research 70', perfection2Bonus, 'RESEARCH');
-  
-  const perfection3Bonus = (1 + 8 * (playerData.research.perfection[3] > 1));
-  BonusDebugger.log('Research 80', perfection3Bonus, 'RESEARCH');
-  
-  const mission4_1 = (playerData.research.mission[4] > 1 ? 3 : 1);
-  const mission4_3 = (playerData.research.mission[4] > 3 ? 4 : 1);
-  const mission4_5 = (playerData.research.mission[4] > 5 ? 5 : 1);
-  const mission4Bonus = mission4_1 * mission4_3 * mission4_5;
-  BonusDebugger.log('Research 77', mission4Bonus, 'RESEARCH');
+  const research55Bonus = Math.pow(1.75, Math.floor(playerData.research.research55 / 2));
+  BonusDebugger.log('Research 55', research55Bonus, 'RESEARCH');
+
+  const research60Bonus = (1 + 4 * (playerData.research.research60 > 1));
+  BonusDebugger.log('Research 60', research60Bonus, 'RESEARCH');
+
+  const research67_1 = (playerData.research.research67 > 1 ? 2 : 1);
+  const research67_3 = (playerData.research.research67 > 3 ? 3 : 1);
+  const research67_5 = (playerData.research.research67 > 5 ? 4 : 1);
+  const research67Bonus = research67_1 * research67_3 * research67_5;
+  BonusDebugger.log('Research 67', research67Bonus, 'RESEARCH');
+
+  const research70Bonus = (1 + 4 * (playerData.research.research70 > 1));
+  BonusDebugger.log('Research 70', research70Bonus, 'RESEARCH');
+
+  const research77_1 = (playerData.research.research77 > 1 ? 3 : 1);
+  const research77_3 = (playerData.research.research77 > 3 ? 4 : 1);
+  const research77_5 = (playerData.research.research77 > 5 ? 5 : 1);
+  const research77Bonus = research77_1 * research77_3 * research77_5;
+  BonusDebugger.log('Research 77', research77Bonus, 'RESEARCH');
+
+  const research80Bonus = (1 + 8 * (playerData.research.research80 > 1));
+  BonusDebugger.log('Research 80', research80Bonus, 'RESEARCH');
 
   const research87_1 = (playerData.research.research87 >= 1 ? 13 : 1);
   const research87_2 = (playerData.research.research87 >= 2 ? 21 : 1);
@@ -371,7 +363,7 @@ const getMatBonusFromResearch = () => {
   const research87Bonus = research87_1 * research87_2 * research87_3 * research87_4 * research87_5 * research87_6;
   BonusDebugger.log('Research 87', research87Bonus, 'RESEARCH');
 
-  const bonus = mission0Bonus * mission1Bonus * perfection1Bonus * mission3Bonus * perfection2Bonus * perfection3Bonus * mission4Bonus * research87Bonus;
+  const bonus = research43Bonus * research55Bonus * research60Bonus * research67Bonus * research70Bonus * research77Bonus * research80Bonus * research87Bonus;
   BonusDebugger.log('Final Research Bonus:', bonus);
   BonusDebugger.groupEnd();
 
@@ -705,17 +697,7 @@ class ProjectConfig {
   MaxLevel(storeHouse) {
     this.testLevel = this.currentLevel
 
-    let costDiv = 1
-    costDiv =
-      (playerData.research.construction[0] > 1 ? 1.5 : 1) *
-      (playerData.research.construction[0] > 3 ? 2 : 1) *
-      (playerData.research.construction[0] > 5 ? 2.5 : 1)
-    costDiv *=
-      (playerData.research.construction[1] > 1 ? 2 : 1) *
-      (playerData.research.construction[1] > 2 ? 3 : 1) *
-      (playerData.research.construction[1] > 3 ? 3 : 1) *
-      (playerData.research.construction[1] > 4 ? 4 : 1) *
-      (playerData.research.construction[1] > 5 ? 4 : 1)
+    let costDiv = this.getCostDiv()
 
     let accumCosts = [0, 0, 0, 0, 0, 0, 0, 0]
     while (true) {
@@ -726,11 +708,6 @@ class ProjectConfig {
         costDiv,
         playerData.ouro.enabled,
       )
-      //   if (this.testLevel === this.startLevel)
-      //   {
-      //     console.log(`Project: ${this.projectID}, Level: ${this.testLevel}`);
-      //     console.table(nextCosts);
-      //   }
 
       for (let i = 0; i < storeHouse.mats.length; i++) {
         if (
@@ -765,15 +742,15 @@ class ProjectConfig {
   getCostDiv() {
     let costDiv = 1
     costDiv =
-      (playerData.research.construction[0] > 1 ? 1.5 : 1) *
-      (playerData.research.construction[0] > 3 ? 2 : 1) *
-      (playerData.research.construction[0] > 5 ? 2.5 : 1)
+      (playerData.research.research62 > 1 ? 1.5 : 1) *
+      (playerData.research.research62 > 3 ? 2 : 1) *
+      (playerData.research.research62 > 5 ? 2.5 : 1)
     costDiv *=
-      (playerData.research.construction[1] > 1 ? 2 : 1) *
-      (playerData.research.construction[1] > 2 ? 3 : 1) *
-      (playerData.research.construction[1] > 3 ? 3 : 1) *
-      (playerData.research.construction[1] > 4 ? 4 : 1) *
-      (playerData.research.construction[1] > 5 ? 4 : 1)
+      (playerData.research.research72 > 1 ? 2 : 1) *
+      (playerData.research.research72 > 2 ? 3 : 1) *
+      (playerData.research.research72 > 3 ? 3 : 1) *
+      (playerData.research.research72 > 4 ? 4 : 1) *
+      (playerData.research.research72 > 5 ? 4 : 1)
 
     return costDiv
   }

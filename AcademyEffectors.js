@@ -232,7 +232,7 @@ const sections = [
     name: 'Research',
     children: [
       {
-        id: 'mission1',
+        id: 'research43',
         type: 'select',
         label: 'Research 43',
         maxLevel: 6,
@@ -240,7 +240,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'mission2',
+        id: 'research55',
         type: 'select',
         label: 'Research 55',
         maxLevel: 6,
@@ -248,7 +248,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'mission3',
+        id: 'research58',
         type: 'select',
         label: 'Research 58',
         maxLevel: 6,
@@ -256,7 +256,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'perfection2',
+        id: 'research60',
         type: 'select',
         label: 'Research 60',
         maxLevel: 6,
@@ -264,7 +264,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'construction1',
+        id: 'research62',
         type: 'select',
         label: 'Research 62',
         maxLevel: 6,
@@ -272,7 +272,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'mission4',
+        id: 'research67',
         type: 'select',
         label: 'Research 67',
         maxLevel: 6,
@@ -280,7 +280,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'perfection3',
+        id: 'research70',
         type: 'select',
         label: 'Research 70',
         maxLevel: 6,
@@ -288,7 +288,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'construction2',
+        id: 'research72',
         type: 'select',
         label: 'Research 72',
         maxLevel: 6,
@@ -296,7 +296,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'mission5',
+        id: 'research77',
         type: 'select',
         label: 'Research 77',
         maxLevel: 6,
@@ -304,7 +304,7 @@ const sections = [
         textClassName: 'font-normal',
       },
       {
-        id: 'perfection4',
+        id: 'research80',
         type: 'select',
         label: 'Research 80',
         maxLevel: 6,
@@ -526,38 +526,38 @@ academyEffectorPortal.pages.default.dataLinkage = {
   set earthly(value) {
     playerData.shardMilestones[28] = value
   },
-  set mission1(value) {
-    playerData.research.mission[0] = value
+  set research43(value) {
+    playerData.research.research43 = value
   },
-  set mission2(value) {
-    playerData.research.mission[1] = value
+  set research55(value) {
+    playerData.research.research55 = value
   },
-  set mission3(value) {
-    playerData.research.mission[2] = value
+  set research58(value) {
+    playerData.research.research58 = value
   },
-  set mission4(value) {
-    playerData.research.mission[3] = value
+  set research67(value) {
+    playerData.research.research67 = value
   },
-  set mission5(value) {
-    playerData.research.mission[4] = value
+  set research77(value) {
+    playerData.research.research77 = value
   },
-  set perfection1(value) {
-    playerData.research.perfection[0] = value
+  set research60(value) {
+    playerData.research.research60 = value
   },
-  set perfection2(value) {
-    playerData.research.perfection[1] = value
+  set research70(value) {
+    playerData.research.research70 = value
   },
-  set perfection3(value) {
-    playerData.research.perfection[2] = value
+  set research80(value) {
+    playerData.research.research80 = value
   },
-  set perfection4(value) {
-    playerData.research.perfection[3] = value
+  set research62(value) {
+    playerData.research.research62 = value
   },
-  set construction1(value) {
-    playerData.research.construction[0] = value
-  },
-  set construction2(value) {
-    playerData.research.construction[1] = value
+  set research72(value) {
+    playerData.research.research72 = value
+  },  
+  set reseach80(value) {
+    playerData.research.reseach80 = value
   },
   set research87(value) {
     playerData.research.research87 = value
@@ -581,38 +581,38 @@ academyEffectorPortal.pages.default.dataLinkage = {
   get earthly() {
     return playerData.shardMilestones[28]
   },
-  get mission1() {
-    return playerData.research.mission[0]
+  get research43() {
+    return playerData.research.research43
   },
-  get mission2() {
-    return playerData.research.mission[1]
+  get research55() {
+    return playerData.research.research55
   },
-  get mission3() {
-    return playerData.research.mission[2]
+  get research58() {
+    return playerData.research.research58
   },
-  get mission4() {
-    return playerData.research.mission[3]
+  get research67() {
+    return playerData.research.research67
   },
-  get mission5() {
-    return playerData.research.mission[4]
+  get research77() {
+    return playerData.research.research77
   },
-  get perfection1() {
-    return playerData.research.perfection[0]
+  get research60() {
+    return playerData.research.research60
   },
-  get perfection2() {
-    return playerData.research.perfection[1]
+  get research70() {
+    return playerData.research.research70
   },
-  get perfection3() {
-    return playerData.research.perfection[2]
+  get research80() {
+    return playerData.research.research80
   },
-  get perfection4() {
-    return playerData.research.perfection[3]
+  get research62() {
+    return playerData.research.research62
   },
-  get construction1() {
-    return playerData.research.construction[0]
+  get research72() {
+    return playerData.research.research72
   },
-  get construction2() {
-    return playerData.research.construction[1]
+  get reseach80() {
+    return playerData.research.reseach80
   },
   get research87() {
     return playerData.research.research87

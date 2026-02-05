@@ -249,7 +249,7 @@ let GameDB = {
       return acc
     }, []),
     badgeRequirement: [
-      // worker 50, in 50, tink 50, looper 75, eff 75, eng 100; total 400
+      // worker 50, eng 80, eff 75, tink 60, looper 75, inno 60; total 400
       // c1 50 cores, c2 55 cores, c3 65 cores, 100 instant cores; total 270
       // need more 130 cores to complete first 6 badges
       [130 * 4], // up till engi

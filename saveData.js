@@ -79,23 +79,16 @@ const blankPlayer = {
     0, // (29) Earthly
   ],
   research: {
-    mission: [
-      0, // (1) [AP = (level > 2 ? 1.3 : 1) * (level > 4 ? 1.3 : 1), Materials = pow(1.5, floor(level / 2))]
-      0, // (2) [AP = (level > 2 ? 1.5 : 1) * (level > 4 ? 1.5 : 1), Materials = pow(1.75, floor(level / 2))]
-      0, // (3) [Mission Speed = pow(1.05, floor((level + 1) / 2)) || BUGGED = pow(1.05, floor((level + 1) / 2)) / (0.05 * (level === 6) + 1)]
-      0, // (4) [AP = (level > 2 ? 2 : 1) * (level > 4 ? 3 : 1), Materials = (level > 1 ? 2 : 1) * (level > 3 ? 3 : 1) * (level > 5 ? 4 : 1)]
-      0, //  (5) [AP = (level > 2 ? 3 : 1) * (level > 4 ? 4 : 1), Materials = (level > 1 ? 3 : 1) * (level > 3 ? 4 : 1) * (level > 5 ? 5 : 1)]
-    ],
-    perfection: [
-      0, // (1) [AP = level > 3 ? 10 : 1]
-      0, // (2) [AP = level > 3 ? 10 : 1, Materials = 4 * (level > 1) + 1]
-      0, // (3) [AP = level > 3 ? 50 : 1, Materials = 4 * (level > 1) + 1, Mission Speed = (level > 4) + 1]
-      0, // (4) [AP = level > 3 ? 99 : 1, Materials = 8 * (level > 1) + 1, Mission Speed = (level > 4) + 1]
-    ],
-    construction: [
-      0, // (1) Project Cost = (level > 1 ? 1.5 : 1) * (level > 3 ? 2 : 1) * (level > 5 ? 2.5 : 1)]
-      0, // (2) Project Cost = (level > 1 ? 2 : 1) * (level > 3 ? 3 : 1) * (level > 5 ? 4 : 1)]
-    ],
+    research43: 0, // (1-6) Material: Lv2 x1.5, Lv4 x1.5, Lv6 x1.5
+    research55: 0, // (1-6) Material: Lv2 x1.75, Lv4 x1.75, Lv6 x1.75
+    research58: 0, // (1-6) Speed: Lv1 *1.05, Lv3 *1.05, Lv5 *1.05
+    research60: 0, // (1-6) Material: Lv2 x5
+    research62: 0, // (1-6) Proj Cost: Lv2 /1.5, Lv4 /2, Lv6 /2.5
+    research67: 0, // (1-6) Material: Lv2 x2, Lv4 x3, Lv6 x4
+    research70: 0, // (1-6) Material: Lv2 x5; Speed: Lv5 *2
+    research72: 0, // (1-6) Proj Cost: Lv2 /2, Lv3 /3, Lv4 /3, Lv5 /4, Lv6 /4
+    research77: 0, // (1-6) Material: Lv2 x3, Lv4 x4, Lv6 x5
+    research80: 0, // (1-6) Material: Lv2 x9; Speed: Lv5 *1.5
     research87: 0, // (1-6) Material: Lv1 x13, Lv2 x21, Lv3 x34, Lv4 x55, Lv5 x89, Lv6 x144
   },
   academy: {
@@ -401,6 +394,37 @@ function fixPlayerData() {
   if (!playerData.ouro.ts) {
     playerData.ouro.ts = blankPlayer.ouro.ts
   }
+
+  newResearch = blankPlayer.research
+
+  if (Array.isArray(playerData.research.mission)) {
+    newResearch.research43 = playerData.research.mission[0]
+    newResearch.research55 = playerData.research.mission[1]
+    newResearch.research58 = playerData.research.mission[2]
+    newResearch.research67 = playerData.research.mission[3]
+    newResearch.research77 = playerData.research.mission[4]
+
+    delete playerData.mission
+  }
+
+  if (Array.isArray(playerData.research.perfection)) {
+    newResearch.research60 = playerData.research.perfection[1]
+    newResearch.research70 = playerData.research.perfection[2]
+    newResearch.research80 = playerData.research.perfection[3]
+
+    delete playerData.perfection
+  }
+
+  if (Array.isArray(playerData.research.construction)) {
+    newResearch.research72 = playerData.research.construction[0]
+    newResearch.research80 = playerData.research.construction[1]
+
+    delete playerData.construction
+  }
+
+  newResearch.research87 = playerData.research.research87 || 0
+
+  playerData.research = newResearch
 
   if (playerData.version < blankPlayer.version) {
     playerData.version = blankPlayer.version
