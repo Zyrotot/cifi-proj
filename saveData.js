@@ -397,6 +397,12 @@ function fixPlayerData() {
     playerData.ouro.ts = blankPlayer.ouro.ts
   }
 
+  for (let prop in blankPlayer.ouro) {
+    if (!playerData.ouro.hasOwnProperty(prop)) {
+      playerData.ouro[prop] = blankPlayer.ouro[prop]
+    }
+  }
+
   newResearch = blankPlayer.research
   isLegacyResearch = false
 
