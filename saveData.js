@@ -403,7 +403,7 @@ function fixPlayerData() {
     }
   }
 
-  if (!playerData.hasOwnProperty(loopReset)) {
+  if (!playerData.hasOwnProperty('loopReset')) {
     playerData.loopReset = 0
   }
 
