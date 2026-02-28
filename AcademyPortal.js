@@ -197,9 +197,6 @@ function GetMaxMissionRate() {
     }
   }
 
-  // console.table(personnel);
-  // console.log(farmDetails);
-
   farmDetails.sort((a, b) => a.baseTime - b.baseTime)
 
   for (let i = 0; i < farmDetails.length; i++) {

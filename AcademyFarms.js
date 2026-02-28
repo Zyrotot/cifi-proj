@@ -385,30 +385,6 @@ academyFarmPortal.pages.default.initFunction = function (panel) {
 
     section.appendChild(table)
 
-    const assignButton = createElement(
-      'button',
-      'btn btn-secondary',
-      {
-        type: 'button',
-        style: 'display: block; margin: 20px auto; min-width: 300px',
-      },
-      'Maximize Mission Rate',
-    )
-    assignButton.addEventListener('click', maximizeMissionRate)
-    section.append(assignButton)
-
-    const clearButton = createElement(
-      'button',
-      'btn btn-secondary',
-      {
-        type: 'button',
-        style: 'display: block; margin: 20px auto; min-width: 300px',
-      },
-      'Clear Missions',
-    )
-    clearButton.addEventListener('click', clearMissions)
-    section.append(clearButton)
-
     return section
   }
 
@@ -432,6 +408,55 @@ academyFarmPortal.pages.default.initFunction = function (panel) {
     portalPanel['duration'] = select
     col.appendChild(select)
     section.appendChild(unit)
+
+    const matUnit = createElement('div', 'row g-3', { style: 'margin-top: 15px' })
+    matUnit.innerHTML =
+      '<div class="col-auto"><label class="col-form-label">maximize</label></div>'
+    const matCol = createElement('div', 'col-auto')
+    matUnit.appendChild(matCol)
+    const matSelect = createElement('select', 'form-select', {
+      id: 'materialToMaximize',
+    })
+    const materials = ['Missions', 'Fragments', 'Difar', 'Kento', 'Chromium', 'Exon', 'Organium', 'Adamorphium', 'Moskom', 'Darkseid']
+    matSelect.innerHTML = materials
+      .map(m => `<option value="${m}">${m}</option>`)
+      .join('')
+    matSelect.value = playerData.academy.materialToMaximize || 'Missions'
+    matSelect.addEventListener('change', (e) => {
+      playerData.academy.materialToMaximize = e.target.value
+      SavePlayerData()
+    })
+    portalPanel['materialToMaximize'] = matSelect
+    matCol.appendChild(matSelect)
+    matUnit.appendChild(matCol)
+    section.appendChild(matUnit)
+
+    const maximizeButton = createElement(
+      'button',
+      'btn btn-primary',
+      {
+        type: 'button',
+        style: 'display: block; margin: 20px auto; min-width: 300px',
+      },
+      'Maximize Selected',
+    )
+    maximizeButton.addEventListener('click', () => {
+      const material = portalPanel['materialToMaximize'].value
+      maximizeMaterial(material)
+    })
+    section.appendChild(maximizeButton)
+
+    const clearButton = createElement(
+      'button',
+      'btn btn-secondary',
+      {
+        type: 'button',
+        style: 'display: block; margin: 20px auto; min-width: 300px',
+      },
+      'Clear Missions',
+    )
+    clearButton.addEventListener('click', clearMissions)
+    section.appendChild(clearButton)
 
     const table = document.createElement('table')
     table.className = 'table table-borderless'
@@ -481,7 +506,17 @@ academyFarmPortal.pages.default.initFunction = function (panel) {
       tbody.appendChild(row)
     })
 
+    section.appendChild(createElement('h4', null, { style: 'margin-top: 20px' }, 'Materials'))
     section.appendChild(table)
+
+    section.appendChild(createElement('h4', null, { style: 'margin-top: 20px' }, 'Relic Fragments'))
+    const fragTable = createElement('table', 'table table-borderless', {
+      style: 'width: 100%; margin-top: 10px',
+    })
+    const fragBody = createElement('tbody')
+    portalPanel.fragTable = fragBody
+    fragTable.appendChild(fragBody)
+    section.appendChild(fragTable)
 
     return section
   }
@@ -742,6 +777,181 @@ function maximizeMissionRate() {
   PopulateTiming()
 }
 
+function maximizeMaterial(material) {
+  if (material === 'Missions') {
+    maximizeMissionRate()
+    return
+  }
+
+  const isFragments = material === 'Fragments'
+
+  const materialMap = {
+    'Difar': 0,
+    'Kento': 1,
+    'Chromium': 2,
+    'Exon': 3,
+    'Organium': 4,
+    'Adamorphium': 5,
+    'Moskom': 6,
+    'Darkseid': 7,
+  }
+
+  let matIndex = null
+  if (!isFragments) {
+    matIndex = materialMap[material]
+    if (matIndex === undefined) {
+      console.error('Unknown material:', material)
+      return
+    }
+  }
+
+  let farms = [...GameDB.academy.farms]
+  let missionSpeedBonus = GetMissionSpeedBonus()
+
+  let personnel = [
+    {
+      power: playerData.academy.personnel[3].power,
+      totalPop: playerData.academy.personnel[3].population,
+      usedPop: 0,
+      get availPop() { return this.totalPop - this.usedPop },
+    },
+    {
+      power: playerData.academy.personnel[2].power,
+      totalPop: playerData.academy.personnel[2].population,
+      usedPop: 0,
+      get availPop() { return this.totalPop - this.usedPop },
+    },
+    {
+      power: playerData.academy.personnel[1].power,
+      totalPop: playerData.academy.personnel[1].population,
+      usedPop: 0,
+      get availPop() { return this.totalPop - this.usedPop },
+    },
+    {
+      power: playerData.academy.personnel[0].power,
+      totalPop: playerData.academy.personnel[0].population,
+      usedPop: 0,
+      get availPop() { return this.totalPop - this.usedPop },
+    },
+  ]
+
+  let farmDetails = []
+  for (let planet = 0; planet < GameDB.academy.planets; planet++) {
+    for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
+      let farmInfo = farms[planet * GameDB.academy.farms_number + farm]
+
+      let priorityScore
+      if (isFragments) {
+        priorityScore = (1 + (farmInfo.fragBonus || 0)) / (farmInfo.baseTime / missionSpeedBonus)
+      } else {
+        priorityScore = farmInfo.baseMats[matIndex] || 0
+      }
+
+      let farmSpecs = {
+        id: farmInfo.id,
+        planet: planet,
+        farm: farm,
+        locked: false,
+        maxPop: farmInfo.maxPop,
+        currentPop: 0,
+        popDistro: [0, 0, 0, 0],
+        power: 0,
+        baseTime: farmInfo.baseTime / missionSpeedBonus,
+        priorityScore: priorityScore,
+        get availSpace() { return this.maxPop - this.currentPop },
+        get timeLimitPassed() {
+          return !(this.power === 0 || (this.baseTime * 60) / this.power >= 2)
+        },
+      }
+
+      if (playerData.academy.farms[planet][farm].locked) {
+        farmSpecs.locked = true
+        farmSpecs.popDistro = [
+          playerData.academy.farms[planet][farm].pods,
+          playerData.academy.farms[planet][farm].fireteams,
+          playerData.academy.farms[planet][farm].titans,
+          playerData.academy.farms[planet][farm].corvettes,
+        ]
+        personnel[3].usedPop += playerData.academy.farms[planet][farm].pods || 0
+        personnel[2].usedPop += playerData.academy.farms[planet][farm].fireteams || 0
+        personnel[1].usedPop += playerData.academy.farms[planet][farm].titans || 0
+        personnel[0].usedPop += playerData.academy.farms[planet][farm].corvettes || 0
+      }
+
+      farmDetails.push(farmSpecs)
+    }
+  }
+
+  let sortedFarms
+  if (isFragments) {
+    sortedFarms = farmDetails.filter(f => !f.locked)
+    sortedFarms.sort((a, b) => b.priorityScore - a.priorityScore)
+  } else {
+    let materialFarms = farmDetails.filter(f => !f.locked && f.priorityScore > 0)
+    let otherFarms = farmDetails.filter(f => !f.locked && f.priorityScore === 0)
+    materialFarms.sort((a, b) => (b.priorityScore / b.baseTime) - (a.priorityScore / a.baseTime))
+    otherFarms.sort((a, b) => a.baseTime - b.baseTime)
+    sortedFarms = [...materialFarms, ...otherFarms]
+  }
+
+  for (let detail of farmDetails) {
+    if (detail.locked) continue
+    playerData.academy.farms[detail.planet][detail.farm].pods = 0
+    playerData.academy.farms[detail.planet][detail.farm].fireteams = 0
+    playerData.academy.farms[detail.planet][detail.farm].titans = 0
+    playerData.academy.farms[detail.planet][detail.farm].corvettes = 0
+  }
+
+  for (let i = 0; i < sortedFarms.length; i++) {
+    let farmSpecs = sortedFarms[i]
+    let planet = farmSpecs.planet
+    let farm = farmSpecs.farm
+
+    for (let personnelNum = 0; personnelNum < 4; personnelNum++) {
+      let populate = Math.min(farmSpecs.availSpace, personnel[personnelNum].availPop)
+      farmSpecs.currentPop += populate
+      farmSpecs.power += populate * personnel[personnelNum].power
+      personnel[personnelNum].usedPop += populate
+      playerData.academy.farms[planet][farm][
+        GameDB.academy.personnel[3 - personnelNum]
+      ] += populate
+
+      while (farmSpecs.timeLimitPassed) {
+        farmSpecs.currentPop--
+        farmSpecs.power -= personnel[personnelNum].power
+
+        if (!farmSpecs.timeLimitPassed && personnelNum === 3) {
+          farmSpecs.currentPop++
+          farmSpecs.power += personnel[personnelNum].power
+          break
+        }
+
+        personnel[personnelNum].usedPop--
+        playerData.academy.farms[planet][farm][
+          GameDB.academy.personnel[3 - personnelNum]
+        ]--
+      }
+
+      if (farmSpecs.availSpace <= 0) break
+    }
+  }
+
+  SavePlayerData()
+
+  for (let planet = 0; planet < GameDB.academy.planets; planet++) {
+    for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
+      for (let p = 0; p < 4; p++) {
+        let type = GameDB.academy.personnel[p]
+        portalPanel[`farm${planet}${farm}${type}`].value =
+          portalPanel.dataLinkage[`farm${planet}${farm}${type}`]
+      }
+    }
+  }
+
+  populateYield()
+  PopulateTiming()
+}
+
 function clearMissions() {
   for (let planet = 0; planet < GameDB.academy.planets; planet++) {
     for (let farm = 0; farm < GameDB.academy.farms_number; farm++) {
@@ -792,6 +1002,7 @@ function populateYield() {
     )
 
     genZeusRank(yieldData.missionYield, duration, yieldData.missionContrib)
+    populateFragments(yieldData.missionYield, duration, yieldData.missionContrib)
     genProduction(portalPanel.missionProd, yieldData.missionContrib)
     genProduction(portalPanel.apProd, apContrib)
     genProduction(portalPanel.difarProd, yieldData.matContrib[0])
@@ -823,48 +1034,6 @@ function genZeusRank(missionCount, duration, missionContrib) {
         .text(formatInteger(numMissionPerHr) + ' / hr'),
     )
   zeusTable.append(missionRate)
-  if (playerData.ouro.enabled) {
-    BonusDebugger.group('Fragments rate');
-
-    const fragPerMission = (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12  / 10) || 0))
-    BonusDebugger.log('Fragments per mission', fragPerMission, 'FRAG');
-
-    const fragFromMissionPerHr = numMissionPerHr * fragPerMission
-    BonusDebugger.log('Fragments from mission per hour', fragFromMissionPerHr, 'FRAG');
-    
-    const fragFromfarmMissions = Object.entries(missionContrib).reduce((total, [farmId, count]) => {
-      const farm = GameDB.academy.farms.find(f => f.id.toString() === farmId)
-      const farmFragBonus = (farm?.fragBonus || 0)
-      return total + (count * fragPerMission * farmFragBonus)
-    }, 0)
-    BonusDebugger.log('Fragments from farm missions', fragFromfarmMissions, 'FRAG');
-    
-    const fragmentationIAPBonus = (playerData.diamonds.iapFragmentation ? 1.1 : 1);
-    BonusDebugger.log('Fragmentation bonus', fragmentationIAPBonus, 'FRAG');
-  
-    const totalRelicFragPerHr = (fragFromMissionPerHr + fragFromfarmMissions) * fragmentationIAPBonus;
-
-    BonusDebugger.log('Total fragments rate per hour', totalRelicFragPerHr, 'TOTAL');
-    BonusDebugger.groupEnd();
-      zeusTable.append(
-      $('<tr>')
-        .append($('<td>').text('Relic Fragment'))
-        .append(
-          $('<td>')
-            .addClass('text-end font-normal')
-            .text(formatFloat(totalRelicFragPerHr) + ' / hr'),
-        ),
-    )
-    zeusTable.append(
-      $('<tr>')
-        .append('<td>')
-        .append(
-          $('<td>')
-            .addClass('text-end font-normal')
-            .text(formatFloat(totalRelicFragPerHr * 24) + ' / d'),
-        ),
-    )
-  }
 
   let missionLeft = missionCount
   let rankProgress = playerData.fleet.zeus.rank.progress
@@ -887,9 +1056,6 @@ function genZeusRank(missionCount, duration, missionContrib) {
 
     missionLeft -= requirement
     yieldRank++
-    // console.log('missionLeft', missionLeft)
-    // console.log('requirement', requirement)
-
     const row = createElement('tr')
     row.appendChild(createElement('td', '', null, yieldRank))
     const time = (requirement / missionCount) * duration
@@ -916,6 +1082,76 @@ function genZeusRank(missionCount, duration, missionContrib) {
 
     container.append($(row))
   }
+}
+
+function populateFragments(missionCount, duration, missionContrib) {
+  const fragTable = $(portalPanel.fragTable)
+  fragTable.html('')
+
+  if (!playerData.ouro.enabled) {
+    fragTable.append(
+      $('<tr>').append($('<td>').addClass('font-normal').text('Ouro not enabled'))
+    )
+    return
+  }
+
+  const numMissionPerHr = (missionCount / duration) * 3600
+
+  BonusDebugger.group('Fragments rate');
+
+  const fragPerMission = (0.001 + 0.001 * (playerData.relics.relic5 || 0) + 0.0001 * (playerData.gadgets.gadget12 || 0) + 0.0005 * (Math.floor(playerData.gadgets.gadget12 / 10) || 0))
+  BonusDebugger.log('Fragments per mission', fragPerMission, 'FRAG');
+
+  const fragFromMissionPerHr = numMissionPerHr * fragPerMission
+  BonusDebugger.log('Fragments from mission per hour', fragFromMissionPerHr, 'FRAG');
+
+  const fragFromfarmMissions = Object.entries(missionContrib).reduce((total, [farmId, count]) => {
+    const farm = GameDB.academy.farms.find(f => f.id.toString() === farmId)
+    const farmFragBonus = (farm?.fragBonus || 0)
+    return total + (count * fragPerMission * farmFragBonus)
+  }, 0)
+  BonusDebugger.log('Fragments from farm missions', fragFromfarmMissions, 'FRAG');
+
+  const fragmentationIAPBonus = (playerData.diamonds.iapFragmentation ? 1.1 : 1);
+  BonusDebugger.log('Fragmentation bonus', fragmentationIAPBonus, 'FRAG');
+
+  const totalRelicFragPerHr = (fragFromMissionPerHr + fragFromfarmMissions) * fragmentationIAPBonus;
+
+  BonusDebugger.log('Total fragments rate per hour', totalRelicFragPerHr, 'TOTAL');
+  BonusDebugger.groupEnd();
+
+  fragTable.append(
+    $('<tr>')
+      .append($('<td>').text('Per Mission'))
+      .append($('<td>').addClass('text-end font-normal').text(formatFloat(fragPerMission))),
+  )
+  fragTable.append(
+    $('<tr>')
+      .append($('<td>').text('Base Rate'))
+      .append($('<td>').addClass('text-end font-normal').text(formatFloat(fragFromMissionPerHr) + ' / hr')),
+  )
+  fragTable.append(
+    $('<tr>')
+      .append($('<td>').text('Farm Bonus'))
+      .append($('<td>').addClass('text-end font-normal').text(formatFloat(fragFromfarmMissions) + ' / hr')),
+  )
+  if (fragmentationIAPBonus > 1) {
+    fragTable.append(
+      $('<tr>')
+        .append($('<td>').text('IAP Bonus'))
+        .append($('<td>').addClass('text-end font-normal').text('x' + fragmentationIAPBonus)),
+    )
+  }
+  fragTable.append(
+    $('<tr>')
+      .append($('<td>').css('font-weight', 'bold').text('Total'))
+      .append($('<td>').addClass('text-end font-normal').css('font-weight', 'bold').text(formatFloat(totalRelicFragPerHr) + ' / hr')),
+  )
+  fragTable.append(
+    $('<tr>')
+      .append($('<td>'))
+      .append($('<td>').addClass('text-end font-normal').css('font-weight', 'bold').text(formatFloat(totalRelicFragPerHr * 24) + ' / d')),
+  )
 }
 
 function genProduction(table, contrib) {
