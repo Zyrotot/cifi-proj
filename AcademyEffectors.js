@@ -27,7 +27,6 @@ const sections = [
         label: 'Number of Loops Reset',
         style: { width: 80 },
       },
-      { id: 'engineering', type: 'checkbox', label: 'Engineering Badge' },
       { id: 'ouroboros', type: 'checkbox', label: 'Ouroboros Unlocked' },
     ],
   },
@@ -436,10 +435,10 @@ const sections = [
   {
     name: 'Badges',
     group: 'Ouroboros Content',
-    isOuro: true,
     children: [
-      { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation' },
-      { id: 'innovation2', type: 'checkbox', label: 'Innovation #2' },
+      { id: 'engineering', type: 'checkbox', label: 'Engineering Badge' },
+      { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation', isOuro: true },
+      { id: 'innovation2', type: 'checkbox', label: 'Innovation #2', isOuro: true },
     ],
     style: 'min-width: 220px',
   },
