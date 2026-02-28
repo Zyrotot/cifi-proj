@@ -116,3 +116,63 @@ table.table th {
   margin-right: 4px;
   vertical-align: text-top;
 }
+
+.effector-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px 0;
+  align-items: start;
+}
+
+.effector-col {
+  padding: 12px 20px;
+  border-right: 1px solid #2a2a2a;
+}
+
+.effector-col:last-child {
+  border-right: none;
+}
+
+.effector-section-header {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #333;
+}
+
+.effector-col .effector-section-header:first-child {
+  margin-top: 0;
+}
+
+.effector-col .effector-section-group {
+  margin-bottom: 4px;
+  padding: 8px 10px 4px;
+  border-radius: 6px;
+}
+
+.effector-col .effector-section-group:nth-child(odd) {
+  background-color: #1a1a1a;
+}
+
+.effector-col .effector-section-group:nth-child(even) {
+  background-color: #111;
+}
+
+@media (max-width: 900px) {
+  .effector-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 550px) {
+  .effector-columns {
+    grid-template-columns: 1fr;
+  }
+  .effector-col {
+    border-right: none;
+    border-bottom: 1px solid #2a2a2a;
+  }
+}

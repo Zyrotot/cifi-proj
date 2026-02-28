@@ -7,6 +7,7 @@ let academyEffectorPortal = {
 const sections = [
   {
     name: 'General',
+    group: 'Core',
     children: [
       {
         id: 'playerlevel',
@@ -32,6 +33,7 @@ const sections = [
   },
   {
     name: 'Loop Mod',
+    group: 'Core',
     children: [
       {
         id: 'zeusrankbenefits',
@@ -135,6 +137,13 @@ const sections = [
         label: 'Planet Sekhur-5',
         textHtml:
           '/ <label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Starts at 1, increases with ultima cap">1</label> <span class="text-super">*</c>',
+        info: {
+          type: 'mod',
+          icon: 'sekhur5.jpg',
+          position: 'Top-Right',
+          effect: 'x1.5 mats',
+          cost: 'e1000 mp',
+        },
         isOuro: true,
       },
       {
@@ -142,12 +151,20 @@ const sections = [
         type: 'number',
         label: 'Boon: Eternity Bonus',
         style: { width: 80 },
+        info: {
+          type: 'mod',
+          icon: 'eternity.jpg',
+          position: 'Center',
+          effect: 'x1.04 mat / campaign',
+          cost: 'e1030 mp',
+        },
         isOuro: true,
       },
     ],
   },
   {
     name: 'Zeus',
+    group: 'Fleet',
     children: [
       { id: 'zeusrank', type: 'number', label: 'Rank' },
       { id: 'zeuscrew', type: 'number', label: 'Crew', style: { width: 60 } },
@@ -182,6 +199,7 @@ const sections = [
   },
   {
     name: 'Ouroboros',
+    group: 'Fleet',
     isOuro: true,
     children: [
       { id: 'ourocrew', type: 'number', label: 'Crew', style: { width: 60 } },
@@ -197,6 +215,7 @@ const sections = [
   },
   {
     name: 'Shard Milestone',
+    group: 'Upgrades',
     children: [
       {
         id: 'wonderous',
@@ -214,6 +233,7 @@ const sections = [
   },
   {
     name: 'Diamond Shop',
+    group: 'Upgrades',
     children: [
       {
         id: 'specialmats',
@@ -236,6 +256,7 @@ const sections = [
   },
   {
     name: 'Research',
+    group: 'Upgrades',
     children: [
       {
         id: 'research43',
@@ -331,7 +352,8 @@ const sections = [
     }),
   },
   {
-    name: 'Ouro Content',
+    name: 'Ouro General',
+    group: 'Ouroboros Content',
     isOuro: true,
     children: [
       {
@@ -340,6 +362,15 @@ const sections = [
         label: 'Meltdown Effect',
         style: { width: 80 },
       },
+      { id: 'ts7', type: 'checkbox', label: 'Trait Sphere 7' },
+    ],
+    style: 'min-width: 220px',
+  },
+  {
+    name: 'Relics',
+    group: 'Ouroboros Content',
+    isOuro: true,
+    children: [
       {
         id: 'relic3',
         type: 'number',
@@ -364,6 +395,14 @@ const sections = [
         max: 100,
         text: '/ 100',
       },
+    ],
+    style: 'min-width: 220px',
+  },
+  {
+    name: 'Gadgets',
+    group: 'Ouroboros Content',
+    isOuro: true,
+    children: [
       {
         id: 'gadget8',
         type: 'number',
@@ -375,36 +414,60 @@ const sections = [
         label:
           '<label class="has-tip" data-bs-toggle="tooltip" data-bs-title="Local Fragment Magnet">Gadget 12</label>',
       },
-      { id: 'exo3', type: 'checkbox', label: 'Exodus Gem #3 node' },
-      { id: 'temporalGem3', type: 'checkbox', label: 'Temporal Gem #3 node' },
-      { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation Badge' },
-      { id: 'innovation2', type: 'checkbox', label: 'Innovation #2 Badge' },
-      { id: 'ts7', type: 'checkbox', label: 'Trait Sphere 7' },
+    ],
+    style: 'min-width: 220px',
+  },
+  {
+    name: 'Gems',
+    group: 'Ouroboros Content',
+    isOuro: true,
+    children: [
+      { id: 'exo3', type: 'checkbox', label: 'Exodus Gem #3' },
+      { id: 'temporalGem3', type: 'checkbox', label: 'Temporal Gem #3' },
       {
         id: 'creationgemnode3bonus',
         type: 'number',
         label: 'Creation Gem Node #3 Bonus',
         style: { width: 80 },
       },
+    ],
+    style: 'min-width: 220px',
+  },
+  {
+    name: 'Badges',
+    group: 'Ouroboros Content',
+    isOuro: true,
+    children: [
+      { id: 'darkinno', type: 'checkbox', label: 'Dark Innovation' },
+      { id: 'innovation2', type: 'checkbox', label: 'Innovation #2' },
+    ],
+    style: 'min-width: 220px',
+  },
+  {
+    name: 'Knox & Necrum',
+    group: 'Ouroboros Content',
+    isOuro: true,
+    children: [
       {
         id: 'knoxSowLevel',
         type: 'number',
-        label: 'Knox SoW Modifier Level',
+        label: 'Knox SoW Level',
         style: { width: 80 },
       },
       {
         id: 'knoxMaxStage',
         type: 'number',
-        label: 'Knox Max Stage Reached',
+        label: 'Knox Max Stage',
         style: { width: 80 },
       },
       {
         id: 'necrumStacks',
         type: 'number',
-        label: 'Necrum Exchange Stacks',
+        label: 'Necrum Stacks',
         style: { width: 80 },
       },
     ],
+    style: 'min-width: 220px',
   },
 ]
 
@@ -748,16 +811,28 @@ academyEffectorPortal.pages.default.dataLinkage = {
 }
 
 academyEffectorPortal.pages.default.initFunction = function (panel) {
-  const wrapper = createElement('div', 'section-2', { style: 'gap: 20px' })
+  const wrapper = createElement('div', 'effector-columns')
 
   const ouroEnabled = !!portalPanel.dataLinkage.ouroboros
 
-  sections.forEach(({ name, children, style, isOuro }) => {
-    if (isOuro && !ouroEnabled) return
+  const visibleSections = sections.filter((s) => !s.isOuro || ouroEnabled)
 
-    const section = createElement('div', 'section-3', { style })
-    const header = createElement('h5', '', null, name)
-    section.appendChild(header)
+  const cols = [[], [], []]
+  const colWeights = [0, 0, 0]
+  visibleSections.forEach((sec) => {
+    const weight = sec.children.filter((c) => !c.isOuro || ouroEnabled).length + 1 // +1 for header
+    const minIdx = colWeights.indexOf(Math.min(...colWeights))
+    cols[minIdx].push(sec)
+    colWeights[minIdx] += weight
+  })
+
+  cols.forEach((colSections) => {
+    const column = createElement('div', 'effector-col')
+
+    colSections.forEach(({ name, children, isOuro }) => {
+      const sectionGroup = createElement('div', 'effector-section-group')
+      const header = createElement('h5', 'effector-section-header', null, name)
+      sectionGroup.appendChild(header)
 
     children
       .map(({ id, label, type, text, style = {}, info, ...props }) => {
@@ -886,25 +961,13 @@ academyEffectorPortal.pages.default.initFunction = function (panel) {
         return null
       })
       .filter(Boolean)
-      .forEach((el) => section.appendChild(el))
+      .forEach((el) => sectionGroup.appendChild(el))
 
-    wrapper.appendChild(section)
+    column.appendChild(sectionGroup)
+    })
+
+    wrapper.appendChild(column)
   })
-
-  try {
-    const tips = [
-      "After complete all form inputs, cross check numbers in 2nd and 3rd tabs displaying in small texts with in-game values for validation. Don't forget to update Proj #9 if you've unlocked it before validating.",
-    ]
-
-    $(
-      '<div class="section-3 font-normal" style="font-size: 0.8em; max-width: 400px;">',
-    )
-      .append($('<h6>Tips</h6>'))
-      .append($('<ol>').append(tips.map((tip) => $('<li>').text(tip))))
-      .appendTo(wrapper)
-  } catch (e) {
-    console.error(e)
-  }
 
   panel.appendChild(wrapper)
 
